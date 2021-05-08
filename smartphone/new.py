@@ -1,41 +1,98 @@
 from tkinter import *
-from PIL import ImageTk,Image
+from PIL import ImageTk, Image
 import sqlite3
-root=Tk()
-#Title of project with icon picture.
+
+root = Tk()
+# Title of project with icon picture.
 root.title('Smartphone city')
 root.iconbitmap('smartphone2.ico')
-#for making the full screen.
-root.geometry("%dx%d+0+0"%(root.winfo_screenwidth(),root.winfo_screenheight()))
-#Login background image.
+# for making the full screen.
+root.geometry("%dx%d+0+0" % (root.winfo_screenwidth(), root.winfo_screenheight()))
+# Login background image.
 login = ImageTk.PhotoImage(Image.open('login_im.jpg'))
-login_img=Label(root,image=login).place(x=0,y=0)
+login_img = Label(root, image=login).place(x=0, y=0)
+
+
 # creating a database or connect to one
-conn=sqlite3.connect('address_book.db')
+def mainpage():
+    mroot = Toplevel()
+    image_main = ImageTk.PhotoImage(Image.open('background1.jpg'))
+    login_page_img = Label(mroot, image=image_main).place(x=0, y=0)
+    mroot.geometry("%dx%d+0+0" % (mroot.winfo_screenwidth(), mroot.winfo_screenheight()))
+    my_img1 = ImageTk.PhotoImage(Image.open('mobile1.png'))
+    my_img2 = ImageTk.PhotoImage(Image.open('mobile2.jpg'))
+    my_img3 = ImageTk.PhotoImage(Image.open('mobile3.png'))
+    my_img4 = ImageTk.PhotoImage(Image.open('mobile4.jpg'))
+    my_img5 = ImageTk.PhotoImage(Image.open('mobile5.jpg'))
+    image_list = [my_img1, my_img2, my_img3, my_img4, my_img5]
+    next = ImageTk.PhotoImage(Image.open('next.png'))
+    back1 = ImageTk.PhotoImage(Image.open('back.png'))
+    my_label = Label(mroot, image=my_img3).place(x=100, y=240)
+    photo_text = Label(mroot, text="Some pictures of smartphones:", font=('Times New Roman', 16), bg="white")
+    photo_text.place(x=150, y=210)
+
+    def forward(image_number):
+        global my_label
+        global button_forward
+        global button_back
+        my_label = Label(mroot, image=image_list[image_number - 1])
+        button_forward = Button(mroot, borderwidth=10, image=next, command=lambda: forward(image_number + 1))
+        button_back = Button(mroot, borderwidth=10, image=back1, command=lambda: back(image_number - 1))
+        if image_number == 5:
+            button_forward = Button(mroot, borderwidth=10, image=next, state=DISABLED)
+        my_label.place(x=100, y=240)
+        button_back.place(x=220, y=570)
+        button_forward.place(x=310, y=570)
+
+    def back(image_number):
+        global my_label
+        global button_forward
+        global button_back
+        my_label.grid_forget()
+        my_label = Label(mroot, image=image_list[image_number - 1])
+        button_forward = Button(mroot, borderwidth=10, image=next, command=lambda: forward(image_number + 1))
+        button_back = Button(mroot, borderwidth=10, image=back1, command=lambda: back(image_number - 1))
+        if image_number == 1:
+            button_back = Button(mroot, borderwidth=10, image=back1, state=DISABLED)
+        my_label.place(x=100, y=240)
+        button_back.place(x=220, y=570)
+        button_forward.place(x=310, y=570)
+
+    button_back = Button(mroot, borderwidth=10, image=back1, command=lambda: back(1), state=DISABLED)
+    button_forward = Button(mroot, borderwidth=10, image=next, command=lambda: forward(1))
+    button_back.place(x=220, y=570)
+    button_forward.place(x=310, y=570)
+
+    mroot.mainloop()
+
+
+conn = sqlite3.connect('address_book.db')
 # creating cursor
 # cursor class is an instance using which you can invoke methods that
 # execute SQLITE statements,fetch data from the result sets of the queries
-c=conn.cursor()
+c = conn.cursor()
 # create table
 '''c.execute("""CREATE TABLE addresses(
            user_name text,
-            city text,
-            state text,
-            zipcode integer
+            address text,
+            email text,
+            password text
 )
 """)'''
 
+
 def submit():
-# create a database or connect to one
-    conn=sqlite3.connect('address_book.db')
+    # create a database or connect to one
+    conn = sqlite3.connect('address_book.db')
     # create cursor
-    c=conn.cursor()
+    c = conn.cursor()
 
     # insert into table
-    c.execute("INSERT INTO addresses VALUES(:user_name,:city,:state,:zipcode)",{
-        'user_name':user_name.get(),
-        'city':city.get(),
-        'zipcode':password.get()
+    c.execute("INSERT INTO addresses VALUES(:user_name,:address,:email,:password)", {
+        'user_name': user_name.get(),
+        'address':address.get(),
+        'email': email.get(),
+        'password':password.get()
     })
     print('address inserted successfully')
 
@@ -44,96 +101,170 @@ def submit():
     conn.close()
 
     # clear the text boxes
-    user_name.delete(0,END)
-    city.delete(0, END)
-    state.delete(0, END)
-    zipcode.delete(0, END)
+    user_name.delete(0, END)
+    address.delete(0, END)
+    email.delete(0,END)
+    password.delete(0,END)
 
 def query():
-    conn=sqlite3.connect('address_book.db')
+    conn = sqlite3.connect('address_book.db')
 
-    c=conn.cursor()
+    c = conn.cursor()
     c.execute("SELECT *,oid FROM addresses")
 
-    records=c.fetchall()
+    records = c.fetchall()
     print(records)
 
-    print_record=''
+    print_record = ''
     for record in records:
-        print_record +=str(record[0])+ " "+str(record[1])+' '+'\t'+str(record[6])+ "\n"
+        print_record += str(record[0]) + " " + str(record[1]) + ' ' + '\t' + str(record[4]) + "\n"
 
-    query_label=Label(root,text=print_record)
-    query_label.grid(row=8,column=0,columnspan=2)
+    query_label = Label(root, text=print_record)
+    query_label.grid(row=8, column=0, columnspan=2)
 
     conn.commit()
     conn.close()
 
+
 # create textbox labels
-register_name = Label(root, text="Registration", font=('Times New Roman', 20, "bold"),bg="white")
-register_name.place(x=650, y=142)
-offer = Label(root, text="(Register and get exciting offer)", font=('Times New Roman', 12),bg="white")
-offer.place(x=625, y=180)
+register_name = Label(root, text="Registration", font=('Times New Roman', 20, "bold"), bg="white")
+register_name.place(x=650, y=140)
+offer = Label(root, text="(Register and get exciting offer)", font=('Times New Roman', 12), bg="white")
+offer.place(x=625, y=175)
 
-user_name_label=Label(root,text="User Name", font=('Times New Roman', 13),bg="white")
-user_name_label.place(x=600,y=210)
+user_name_label = Label(root, text="User Name", font=('Times New Roman', 13), bg="white")
+user_name_label.place(x=600, y=198)
 
-gender_label=Label(root,text="Gender", font=('Times New Roman', 13),bg="white")
-gender_label.place(x=600,y=240)
+gender_label = Label(root, text="Gender", font=('Times New Roman', 13), bg="white")
+gender_label.place(x=600, y=228)
 
+district_label = Label(root, text="District", font=('Times New Roman', 13), bg="white")
+district_label.place(x=600, y=258)
 
-district_label=Label(root,text="District", font=('Times New Roman', 13),bg="white")
-district_label.place(x=600,y=270)
+address_label = Label(root, text="Address", font=('Times New Roman', 13), bg="white")
+address_label.place(x=600, y=288)
 
-city_label=Label(root,text="City", font=('Times New Roman', 13),bg="white")
-city_label.place(x=600,y=300)
+email_label = Label(root, text="Email", font=('Times New Roman', 13), bg="white")
+email_label.place(x=600, y=318)
 
-email_label=Label(root,text="Email", font=('Times New Roman', 13),bg="white")
-email_label.place(x=600,y=330)
-
-password_label=Label(root,text="Set password", font=('Times New Roman', 13),bg="white")
-password_label.place(x=600,y=360)
-
-
+password_label = Label(root, text="Set password", font=('Times New Roman', 13), bg="white")
+password_label.place(x=600, y=348)
 
 # create text box
 
-user_name=Entry(root, width=25)
-user_name.place(x=690,y=210)
+user_name = Entry(root, width=16, font=('Times New Roman', 13))
+user_name.place(x=695, y=198)
 
-var=IntVar()
-Radiobutton(root,text="Male",variable=var,value=1).place(x=670,y=240)
-Radiobutton(root,text="Female",variable=var,value=2).place(x=725,y=240)
-Radiobutton(root,text="Other",variable=var,value=3).place(x=790,y=240)
+var = IntVar()
+radio1 = Radiobutton(root, text="Male", variable=var, value=1, bg="white").place(x=670, y=228)
+radio2 = Radiobutton(root, text="Female", variable=var, value=2, bg="white").place(x=725, y=228)
+radio3 = Radiobutton(root, text="Other", variable=var, value=3, bg="white").place(x=790, y=228)
 
-district_list=['Kathmandu','Pokhara','Biratnagar','Kavre','Dhankuta','other'];
-c=StringVar()
-droplist=OptionMenu(root,c,*district_list)
-droplist.config(width=15)
+district_list = ['Kathmandu', 'Pokhara', 'Biratnagar', 'Kavre', 'Dhankuta', 'other'];
+c = StringVar()
+droplist = OptionMenu(root, c, *district_list)
+droplist.config(width=15, bg="white", font=('Times New Roman', 11), borderwidth=0)
 c.set('Select district')
-droplist.place(x=690,y=270)
+droplist.place(x=695, y=258)
 
+address = Entry(root, width=16, font=('Times New Roman', 13))
+address.place(x=695, y=288)
 
-city=Entry(root,width=25)
-city.place(x=690,y=300)
+email = Entry(root, width=16, font=('Times New Roman', 13))
+email.place(x=695, y=318)
 
+password = Entry(root, width=16, font=('Times New Roman', 13))
+password.place(x=695, y=348)
 
-email=Entry(root,width=25)
-email.place(x=690,y=330)
-
-password=Entry(root,width=25)
-password.place(x=690,y=360)
-
-
-
+var1 = StringVar()
+agreement = Checkbutton(root, text="I agree the terms and conditions.", font=('Times New Roman', 12, "bold"),
+                        variable=var1, bg="white")
+agreement.deselect()
+agreement.place(x=600, y=370)
 # create submit button
-submit_btn=Button(root,text="add records",command=submit)
-submit_btn.grid(row=6,column=0,columnspan=2)
+register = PhotoImage(file='register.png')
+submit_btn = Button(root, text="Register", bg="white", font=('Times New Roman', 15, "bold"), command=submit,
+                    image=register, compound=CENTER, borderwidth=0)
+submit_btn.place(x=660, y=395)
 
-print("Table created successfully")
 # commit change
 conn.commit()
 # close connection
 conn.close()
 
+
+def login_fn():
+    global image_login
+    lroot = Toplevel()
+    lroot.title('Smartphone city')
+    lroot.iconbitmap('smartphone2.ico')
+    # for making the full screen.
+    lroot.geometry("%dx%d+0+0" % (lroot.winfo_screenwidth(), lroot.winfo_screenheight()))
+    # Login background image.
+    image_login = ImageTk.PhotoImage(Image.open('login.jpg'))
+    login_page_img = Label(lroot, image=image_login).place(x=0, y=0)
+    login_inside = Label(lroot, text="Login Here", fg="blue", font=('Times New Roman', 20, "bold"), bg="white")
+    login_inside.place(x=660, y=180)
+    user_name_label = Label(lroot, text="User Name", font=('Times New Roman', 13), bg="white")
+    user_name_label.place(x=600, y=250)
+    user_name = Entry(lroot, width=16, font=('Times New Roman', 13))
+    user_name.place(x=690, y=250)
+    password_label = Label(lroot, text="Password", font=('Times New Roman', 13), bg="white")
+    password_label.place(x=600, y=300)
+    password = Entry(lroot, width=16, font=('Times New Roman', 13))
+    password.place(x=690, y=300)
+
+    def forget():
+        global image_forget
+        froot = Toplevel()
+        froot.title('Smartphone city')
+        froot.iconbitmap('smartphone2.ico')
+        # for making the full screen.
+        froot.geometry("%dx%d+0+0" % (froot.winfo_screenwidth(), froot.winfo_screenheight()))
+        # Login background image.
+        image_forget = ImageTk.PhotoImage(Image.open('login.jpg'))
+        forget_page_img = Label(froot, image=image_forget).place(x=0, y=0)
+        forgpas = Label(froot, text="Forget Password??", font=('Times New Roman', 20, "bold"), fg="red", bg="white")
+        forgpas.place(x=610, y=150)
+        warning = Label(froot,
+                        text="If you have forget the password \n please  enter the email address you \n have registered during registration.",
+                        compound=CENTER, font=('Times New Roman', 13), bg="white")
+        warning.place(x=600, y=190)
+        warning_email = Label(froot, text="Registered Email", font=('Times New Roman', 15, "bold"), bg="white")
+        warning_email.place(x=645, y=270)
+        registered_email = Entry(froot, width=22, font=('Times New Roman', 13))
+        registered_email.place(x=620, y=300)
+
+        def send():
+            registered_email.delete(0, END)
+
+        forget_submit_btn = Button(froot, text="SEND", command=send, fg="white", bg="blue",
+                                   font=('Times New Roman', 15, "bold"),
+                                   borderwidth=0)
+        forget_submit_btn.place(x=680, y=340)
+
+    forget_btn = Button(lroot, text="Forget password?", command=forget, fg="red", bg="white",
+                        font=('Times New Roman', 15, "bold"),
+                        borderwidth=0)
+    forget_btn.place(x=650, y=350)
+    login1_btn = Button(lroot, text="Login", bg="white", font=('Times New Roman', 15, "bold"),
+                        image=register, compound=CENTER, borderwidth=0)
+    login1_btn.place(x=660, y=400)
+
+
+login1 = Label(root, text="Login Here", font=('Times New Roman', 20, "bold"), bg="white")
+login1.place(x=660, y=439)
+offer = Label(root, text="(If you have already registered)", font=('Times New Roman', 12), bg="white")
+offer.place(x=630, y=474)
+login_btn = Button(root, text="Login", bg="white", font=('Times New Roman', 15, "bold"), command=login_fn,
+                   image=register, compound=CENTER, borderwidth=0)
+login_btn.place(x=660, y=496)
+guest_login = Label(root, text="Login as guest", font=('Times New Roman', 20, "bold"), bg="white")
+guest_login.place(x=645, y=545)
+user_name_login = Label(root, text="(No information required)", font=('Times New Roman', 12), bg="white")
+user_name_login.place(x=645, y=578)
+guest = Button(root, command=mainpage, text="Guest Login", bg="white", font=('Times New Roman', 15, "bold"),
+               image=register, compound=CENTER, borderwidth=0)
+guest.place(x=660, y=600)
 
 mainloop()
