@@ -62,6 +62,65 @@ def mainpage():
     button_forward = Button(mroot, borderwidth=10, image=next, command=lambda: forward(1))
     button_back.place(x=970, y=570)
     button_forward.place(x=1050, y=570)
+    smartphone_title = Label(mroot, text="Search smart-phone by its name.", font=('Times New Roman', 15, "bold"), bg="white")
+    smartphone_title.place(x=250, y=180)
+    smartphone_name=Label(mroot,text="Smart-phone name:",font=('Times New Roman',15),bg="white")
+    smartphone_name.place(x=200,y=210)
+    smartphone_entry=Entry(mroot,width=17,font=('Times New Roman',15))
+    smartphone_entry.place(x=360,y=211)
+    smartphone_search_btn=Button(mroot,text="Search",font=('Times New Roman',11),bg="white")
+    smartphone_search_btn.place(x=540,y=208)
+
+    smartphone_brand = Label(mroot, text="Search smart-phone by its brand.", font=('Times New Roman', 15, "bold"),
+                             bg="white")
+    smartphone_brand.place(x=250, y=260)
+    smartphone_brand_name = Label(mroot, text="Smart-phone brand:", font=('Times New Roman', 15), bg="white")
+    smartphone_brand_name.place(x=200, y=290)
+    #list
+    brand_list = ['Samsung', 'Oppo', 'Vivo', 'Oneplus', 'Apple', 'Xiaomi'];
+    c = StringVar()
+    droplist = OptionMenu(mroot, c, *brand_list)
+    droplist.config(width=14, bg="white", font=('Times New Roman', 13), borderwidth=0)
+    c.set('Select brand')
+    droplist.place(x=365, y=287)
+    brand_search_btn = Button(mroot, text="Search", font=('Times New Roman', 11), bg="white")
+    brand_search_btn.place(x=540, y=287)
+
+    smartphone_budget = Label(mroot, text="Search smart-phone by the budget category.", font=('Times New Roman', 15, "bold"),
+                             bg="white")
+    smartphone_budget.place(x=210, y=340)
+    smartphone_budget_name = Label(mroot, text="Budget catogeries:", font=('Times New Roman', 15), bg="white")
+    smartphone_budget_name.place(x=200, y=410)
+    var1 = IntVar()
+    radio11 = Radiobutton(mroot, text="Entry level(10,000-25,000)",font=('Times New Roman', 12), variable=var1, value=1, bg="white").place(x=350, y=380)
+    radio22 = Radiobutton(mroot, text="Lower mid-range(25,000-35000)",font=('Times New Roman', 12), variable=var1, value=2, bg="white").place(x=350, y=410)
+    radio33 = Radiobutton(mroot, text="Mid-range(35000-45,000",font=('Times New Roman', 12), variable=var1, value=3, bg="white").place(x=350, y=440)
+    radio44 = Radiobutton(mroot, text="Upper mid-range(50000-60000",font=('Times New Roman', 12), variable=var1, value=4, bg="white").place(x=350, y=470)
+    radio55 = Radiobutton(mroot, text="Lower flag-ship(60,000-80,000",font=('Times New Roman', 12), variable=var1, value=5, bg="white").place(x=350,y=500)
+    radio66 = Radiobutton(mroot, text="Flag-ship(80,000-1,00,000",font=('Times New Roman', 12), variable=var1, value=6, bg="white").place(x=350, y=530)
+    radio77 = Radiobutton(mroot, text="Killer flag-ship(1,00,000-so on ",font=('Times New Roman', 12), variable=var1, value=7, bg="white").place(x=350, y=560)
+    budget_search_btn = Button(mroot, text="Search", font=('Times New Roman', 11), bg="white")
+    budget_search_btn.place(x=600, y=500)
+    smartphone_requirement = Label(mroot, text="Click smart-phone by your requirement.",
+                              font=('Times New Roman', 15, "bold"),
+                              bg="white")
+    smartphone_requirement.place(x=210, y=600)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     mroot.mainloop()
 
