@@ -27,9 +27,9 @@ def mainpage():
     image_list = [my_img1, my_img2, my_img3, my_img4, my_img5]
     next = ImageTk.PhotoImage(Image.open('next.png'))
     back1 = ImageTk.PhotoImage(Image.open('back.png'))
-    my_label = Label(mroot, image=my_img3).place(x=850, y=240)
+    my_label = Label(mroot, image=my_img3).place(x=890, y=240)
     photo_text = Label(mroot, text="Some pictures of smartphones:", font=('Times New Roman', 16), bg="white")
-    photo_text.place(x=920, y=210)
+    photo_text.place(x=960, y=210)
 
     def forward(image_number):
         global my_label
@@ -40,9 +40,9 @@ def mainpage():
         button_back = Button(mroot, borderwidth=10, image=back1, command=lambda: back(image_number - 1))
         if image_number == 5:
             button_forward = Button(mroot, borderwidth=10, image=next, state=DISABLED)
-        my_label.place(x=850, y=240)
-        button_back.place(x=970, y=570)
-        button_forward.place(x=1050, y=570)
+        my_label.place(x=890, y=240)
+        button_back.place(x=1010, y=570)
+        button_forward.place(x=1090, y=570)
 
     def back(image_number):
         global my_label
@@ -54,75 +54,72 @@ def mainpage():
         button_back = Button(mroot, borderwidth=10, image=back1, command=lambda: back(image_number - 1))
         if image_number == 1:
             button_back = Button(mroot, borderwidth=10, image=back1, state=DISABLED)
-        my_label.place(x=850, y=240)
-        button_back.place(x=970, y=570)
-        button_forward.place(x=1050, y=570)
+        my_label.place(x=890, y=240)
+        button_back.place(x=1010, y=570)
+        button_forward.place(x=1090, y=570)
 
     button_back = Button(mroot, borderwidth=10, image=back1, command=lambda: back(1), state=DISABLED)
     button_forward = Button(mroot, borderwidth=10, image=next, command=lambda: forward(1))
-    button_back.place(x=970, y=570)
-    button_forward.place(x=1050, y=570)
-    smartphone_title = Label(mroot, text="Search smart-phone by its name.", font=('Times New Roman', 15, "bold"), bg="white")
-    smartphone_title.place(x=250, y=180)
-    smartphone_name=Label(mroot,text="Smart-phone name:",font=('Times New Roman',15),bg="white")
-    smartphone_name.place(x=200,y=210)
+    button_back.place(x=1010, y=570)
+    button_forward.place(x=1090, y=570)
+    smartphone_title = Label(mroot, text="Search smart-phone by its name.", font=('Times New Roman', 15, "bold"))
+    smartphone_title.place(x=100, y=190)
+    smartphone_name=Label(mroot,text="Smart-phone name:",font=('Times New Roman',13))
+    smartphone_name.place(x=50,y=230)
     smartphone_entry=Entry(mroot,width=17,font=('Times New Roman',15))
-    smartphone_entry.place(x=360,y=211)
+    smartphone_entry.place(x=210,y=230)
     smartphone_search_btn=Button(mroot,text="Search",font=('Times New Roman',11),bg="white")
-    smartphone_search_btn.place(x=540,y=208)
+    smartphone_search_btn.place(x=420,y=230)
 
     smartphone_brand = Label(mroot, text="Search smart-phone by its brand.", font=('Times New Roman', 15, "bold"),
                              bg="white")
-    smartphone_brand.place(x=250, y=260)
-    smartphone_brand_name = Label(mroot, text="Smart-phone brand:", font=('Times New Roman', 15), bg="white")
-    smartphone_brand_name.place(x=200, y=290)
+    smartphone_brand.place(x=100, y=270)
+    smartphone_brand_name = Label(mroot, text="Smart-phone brand:", font=('Times New Roman', 13), bg="white")
+    smartphone_brand_name.place(x=50, y=310)
     #list
     brand_list = ['Samsung', 'Oppo', 'Vivo', 'Oneplus', 'Apple', 'Xiaomi'];
     c = StringVar()
     droplist = OptionMenu(mroot, c, *brand_list)
     droplist.config(width=14, bg="white", font=('Times New Roman', 13), borderwidth=0)
     c.set('Select brand')
-    droplist.place(x=365, y=287)
+    droplist.place(x=215, y=310)
     brand_search_btn = Button(mroot, text="Search", font=('Times New Roman', 11), bg="white")
-    brand_search_btn.place(x=540, y=287)
+    brand_search_btn.place(x=420, y=310)
 
     smartphone_budget = Label(mroot, text="Search smart-phone by the budget category.", font=('Times New Roman', 15, "bold"),
                              bg="white")
-    smartphone_budget.place(x=210, y=340)
-    smartphone_budget_name = Label(mroot, text="Budget catogeries:", font=('Times New Roman', 15), bg="white")
-    smartphone_budget_name.place(x=200, y=410)
+    smartphone_budget.place(x=60, y=360)
+    smartphone_budget_name = Label(mroot, text="Budget catogeries:", font=('Times New Roman', 13), bg="white")
+    smartphone_budget_name.place(x=50, y=480)
     var1 = IntVar()
-    radio11 = Radiobutton(mroot, text="Entry level(10,000-25,000)",font=('Times New Roman', 12), variable=var1, value=1, bg="white").place(x=350, y=380)
-    radio22 = Radiobutton(mroot, text="Lower mid-range(25,000-35000)",font=('Times New Roman', 12), variable=var1, value=2, bg="white").place(x=350, y=410)
-    radio33 = Radiobutton(mroot, text="Mid-range(35000-45,000",font=('Times New Roman', 12), variable=var1, value=3, bg="white").place(x=350, y=440)
-    radio44 = Radiobutton(mroot, text="Upper mid-range(50000-60000",font=('Times New Roman', 12), variable=var1, value=4, bg="white").place(x=350, y=470)
-    radio55 = Radiobutton(mroot, text="Lower flag-ship(60,000-80,000",font=('Times New Roman', 12), variable=var1, value=5, bg="white").place(x=350,y=500)
-    radio66 = Radiobutton(mroot, text="Flag-ship(80,000-1,00,000",font=('Times New Roman', 12), variable=var1, value=6, bg="white").place(x=350, y=530)
-    radio77 = Radiobutton(mroot, text="Killer flag-ship(1,00,000-so on ",font=('Times New Roman', 12), variable=var1, value=7, bg="white").place(x=350, y=560)
+    radio11 = Radiobutton(mroot, text="Entry level(10,000-25,000)",font=('Times New Roman', 12), variable=var1, value=1, bg="white").place(x=190, y=400)
+    radio22 = Radiobutton(mroot, text="Lower mid-range(25,000-35000)",font=('Times New Roman', 12), variable=var1, value=2, bg="white").place(x=190, y=430)
+    radio33 = Radiobutton(mroot, text="Mid-range(35000-45,000)",font=('Times New Roman', 12), variable=var1, value=3, bg="white").place(x=190, y=460)
+    radio44 = Radiobutton(mroot, text="Upper mid-range(50000-60000)",font=('Times New Roman', 12), variable=var1, value=4, bg="white").place(x=190, y=490)
+    radio55 = Radiobutton(mroot, text="Lower flag-ship(60,000-80,000)",font=('Times New Roman', 12), variable=var1, value=5, bg="white").place(x=190,y=520)
+    radio66 = Radiobutton(mroot, text="Flag-ship(80,000-1,00,000)",font=('Times New Roman', 12), variable=var1, value=6, bg="white").place(x=190, y=550)
+    radio77 = Radiobutton(mroot, text="Killer flag-ship(1,00,000-so on) ",font=('Times New Roman', 12), variable=var1, value=7, bg="white").place(x=190, y=580)
     budget_search_btn = Button(mroot, text="Search", font=('Times New Roman', 11), bg="white")
-    budget_search_btn.place(x=600, y=500)
+    budget_search_btn.place(x=420, y=500)
     smartphone_requirement = Label(mroot, text="Click smart-phone by your requirement.",
                               font=('Times New Roman', 15, "bold"),
                               bg="white")
-    smartphone_requirement.place(x=210, y=600)
+    smartphone_requirement.place(x=510, y=190)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    camera_img = ImageTk.PhotoImage(Image.open('camera.jpg'))
+    camera_level=Label(mroot,image=camera_img)
+    camera_level.place(x=550,y=250)
+    game_img = ImageTk.PhotoImage(Image.open('game.jpg'))
+    game_level = Label(mroot, image=game_img)
+    game_level.place(x=700, y=250)
+    battery_img = ImageTk.PhotoImage(Image.open('battery.jpg'))
+    battery_level = Label(mroot, image=battery_img)
+    battery_level.place(x=550, y=400)
+    G5_img = ImageTk.PhotoImage(Image.open('5G.jpg'))
+    G5_level = Label(mroot, image=G5_img)
+    G5_level.place(x=700, y=400)
     mroot.mainloop()
+
 
 
 conn = sqlite3.connect('address_book.db')
