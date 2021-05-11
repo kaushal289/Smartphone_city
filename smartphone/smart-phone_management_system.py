@@ -74,6 +74,7 @@ def mainpage():
 
     smartphone_entry = Entry(mroot, width=17, font=('Times New Roman', 15))
     smartphone_entry.place(x=210, y=230)
+
     smartphone_search_btn = Button(mroot, text="Search", font=('Times New Roman', 11))
     smartphone_search_btn.place(x=440, y=225)
 
