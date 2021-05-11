@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 from PIL import ImageTk, Image
 import sqlite3
 
@@ -9,27 +10,33 @@ root.iconbitmap('smartphone2.ico')
 # for making the full screen.
 root.geometry("%dx%d+0+0" % (root.winfo_screenwidth(), root.winfo_screenheight()))
 # Login background image.
-login = ImageTk.PhotoImage(Image.open('login_im.jpg'))
+login = ImageTk.PhotoImage(Image.open('login_im.png'))
 login_img = Label(root, image=login).place(x=0, y=0)
 
 
 # creating a database or connect to one
 def mainpage():
     mroot = Toplevel()
-    image_main = ImageTk.PhotoImage(Image.open('background1.jpg'))
-    login_page_img = Label(mroot, image=image_main).place(x=0, y=0)
-    mroot.geometry("%dx%d+0+0" % (mroot.winfo_screenwidth(), mroot.winfo_screenheight()))
-    my_img1 = ImageTk.PhotoImage(Image.open('mobile1.png'))
-    my_img2 = ImageTk.PhotoImage(Image.open('mobile2.jpg'))
-    my_img3 = ImageTk.PhotoImage(Image.open('mobile3.png'))
-    my_img4 = ImageTk.PhotoImage(Image.open('mobile4.jpg'))
-    my_img5 = ImageTk.PhotoImage(Image.open('mobile5.jpg'))
+    mroot.geometry("%dx%d+0+0" % (root.winfo_screenwidth(), root.winfo_screenheight()))
+    background_img=PhotoImage(file='background1.png')
+    #creating a canvas
+    my_canvas=Canvas(mroot)
+    my_canvas.pack(fill="both",expand=True)
+    #setting background image in canvas.
+    my_canvas.create_image(0,0,image=background_img,anchor="nw")
+
+
+    my_img1 = PhotoImage(file='mobile1.png')
+    my_img2 = PhotoImage(file='mobile2.png')
+    my_img3 = PhotoImage(file='mobile3.png')
+    my_img4 = PhotoImage(file='mobile4.png')
+    my_img5 = PhotoImage(file='mobile5.png')
     image_list = [my_img1, my_img2, my_img3, my_img4, my_img5]
     next = ImageTk.PhotoImage(Image.open('next.png'))
     back1 = ImageTk.PhotoImage(Image.open('back.png'))
     my_label = Label(mroot, image=my_img3).place(x=890, y=240)
-    photo_text = Label(mroot, text="Some pictures of smartphones:", font=('Times New Roman', 16), bg="white")
-    photo_text.place(x=960, y=210)
+    my_canvas.create_text(1080,210,text="Some pictures of smartphones:", font=('Times New Roman', 18,"bold"))
+
 
     def forward(image_number):
         global my_label
@@ -62,64 +69,98 @@ def mainpage():
     button_forward = Button(mroot, borderwidth=10, image=next, command=lambda: forward(1))
     button_back.place(x=1010, y=570)
     button_forward.place(x=1090, y=570)
-    smartphone_title = Label(mroot, text="Search smart-phone by its name.", font=('Times New Roman', 15, "bold"))
-    smartphone_title.place(x=100, y=190)
-    smartphone_name=Label(mroot,text="Smart-phone name:",font=('Times New Roman',13))
-    smartphone_name.place(x=50,y=230)
-    smartphone_entry=Entry(mroot,width=17,font=('Times New Roman',15))
-    smartphone_entry.place(x=210,y=230)
-    smartphone_search_btn=Button(mroot,text="Search",font=('Times New Roman',11),bg="white")
-    smartphone_search_btn.place(x=420,y=230)
+    my_canvas.create_text(240, 210, text="Search smart-phone by its name.", font=('Times New Roman', 18,"bold"))
+    my_canvas.create_text(130, 240, text="Smart-phone name:", font=('Times New Roman', 14))
 
-    smartphone_brand = Label(mroot, text="Search smart-phone by its brand.", font=('Times New Roman', 15, "bold"),
-                             bg="white")
-    smartphone_brand.place(x=100, y=270)
-    smartphone_brand_name = Label(mroot, text="Smart-phone brand:", font=('Times New Roman', 13), bg="white")
-    smartphone_brand_name.place(x=50, y=310)
-    #list
-    brand_list = ['Samsung', 'Oppo', 'Vivo', 'Oneplus', 'Apple', 'Xiaomi'];
+    smartphone_entry = Entry(mroot, width=17, font=('Times New Roman', 15))
+    smartphone_entry.place(x=210, y=230)
+    smartphone_search_btn = Button(mroot, text="Search", font=('Times New Roman', 11))
+    smartphone_search_btn.place(x=440, y=225)
+
+    my_canvas.create_text(250, 290, text="Search smart-phone by its brand.", font=('Times New Roman', 17, "bold"))
+
+    my_canvas.create_text(130, 320, text="Smart-phone brand:", font=('Times New Roman', 14))
+
+    # list
+    brand_list = ['Samsung', 'Oppo', 'Vivo', 'Oneplus', 'Apple', 'Xiaomi']
     c = StringVar()
     droplist = OptionMenu(mroot, c, *brand_list)
     droplist.config(width=14, bg="white", font=('Times New Roman', 13), borderwidth=0)
     c.set('Select brand')
-    droplist.place(x=215, y=310)
+    droplist.place(x=215, y=305)
     brand_search_btn = Button(mroot, text="Search", font=('Times New Roman', 11), bg="white")
-    brand_search_btn.place(x=420, y=310)
+    brand_search_btn.place(x=440, y=310)
+    my_canvas.create_text(270, 370, text="Search smart-phone by the budget category.", font=('Times New Roman', 17, "bold"))
+    my_canvas.create_text(115, 500, text="Budget catogeries:", font=('Times New Roman', 13))
 
-    smartphone_budget = Label(mroot, text="Search smart-phone by the budget category.", font=('Times New Roman', 15, "bold"),
-                             bg="white")
-    smartphone_budget.place(x=60, y=360)
-    smartphone_budget_name = Label(mroot, text="Budget catogeries:", font=('Times New Roman', 13), bg="white")
-    smartphone_budget_name.place(x=50, y=480)
     var1 = IntVar()
-    radio11 = Radiobutton(mroot, text="Entry level(10,000-25,000)",font=('Times New Roman', 12), variable=var1, value=1, bg="white").place(x=190, y=400)
-    radio22 = Radiobutton(mroot, text="Lower mid-range(25,000-35000)",font=('Times New Roman', 12), variable=var1, value=2, bg="white").place(x=190, y=430)
-    radio33 = Radiobutton(mroot, text="Mid-range(35000-45,000)",font=('Times New Roman', 12), variable=var1, value=3, bg="white").place(x=190, y=460)
-    radio44 = Radiobutton(mroot, text="Upper mid-range(50000-60000)",font=('Times New Roman', 12), variable=var1, value=4, bg="white").place(x=190, y=490)
-    radio55 = Radiobutton(mroot, text="Lower flag-ship(60,000-80,000)",font=('Times New Roman', 12), variable=var1, value=5, bg="white").place(x=190,y=520)
-    radio66 = Radiobutton(mroot, text="Flag-ship(80,000-1,00,000)",font=('Times New Roman', 12), variable=var1, value=6, bg="white").place(x=190, y=550)
-    radio77 = Radiobutton(mroot, text="Killer flag-ship(1,00,000-so on) ",font=('Times New Roman', 12), variable=var1, value=7, bg="white").place(x=190, y=580)
+    my_canvas.create_rectangle(180,390,430,620,fill="lightblue")
+    radio11 = Radiobutton(mroot, text="Entry level(10,000-25,000)", font=('Times New Roman', 12), variable=var1,
+                          value=1, bg="lightblue").place(x=190, y=400)
+    radio22 = Radiobutton(mroot, text="Lower mid-range(25,000-35000)", font=('Times New Roman', 12), variable=var1,
+                          value=2, bg="lightblue").place(x=190, y=430)
+    radio33 = Radiobutton(mroot, text="Mid-range(35000-45,000)", font=('Times New Roman', 12), variable=var1, value=3,
+                          bg="lightblue").place(x=190, y=460)
+    radio44 = Radiobutton(mroot, text="Upper mid-range(50000-60000)", font=('Times New Roman', 12), variable=var1,
+                          value=4, bg="lightblue").place(x=190, y=490)
+    radio55 = Radiobutton(mroot, text="Lower flag-ship(60,000-80,000)", font=('Times New Roman', 12), variable=var1,
+                          value=5, bg="lightblue").place(x=190, y=520)
+    radio66 = Radiobutton(mroot, text="Flag-ship(80,000-1,00,000)", font=('Times New Roman', 12), variable=var1,
+                          value=6, bg="lightblue").place(x=190, y=550)
+    radio77 = Radiobutton(mroot, text="Killer flag-ship(1,00,000-so on) ", font=('Times New Roman', 12), variable=var1,
+                          value=7, bg="lightblue").place(x=190, y=580)
     budget_search_btn = Button(mroot, text="Search", font=('Times New Roman', 11), bg="white")
-    budget_search_btn.place(x=420, y=500)
-    smartphone_requirement = Label(mroot, text="Click smart-phone by your requirement.",
-                              font=('Times New Roman', 15, "bold"),
-                              bg="white")
-    smartphone_requirement.place(x=510, y=190)
+    budget_search_btn.place(x=440, y=490)
+    my_canvas.create_text(680, 225, text="Click smart-phone by your \n            requirement.",
+                          font=('Times New Roman', 17, "bold"))
 
-    camera_img = ImageTk.PhotoImage(Image.open('camera.jpg'))
-    camera_level=Label(mroot,image=camera_img)
-    camera_level.place(x=550,y=250)
-    game_img = ImageTk.PhotoImage(Image.open('game.jpg'))
-    game_level = Label(mroot, image=game_img)
-    game_level.place(x=700, y=250)
-    battery_img = ImageTk.PhotoImage(Image.open('battery.jpg'))
-    battery_level = Label(mroot, image=battery_img)
-    battery_level.place(x=550, y=400)
-    G5_img = ImageTk.PhotoImage(Image.open('5G.jpg'))
-    G5_level = Label(mroot, image=G5_img)
-    G5_level.place(x=700, y=400)
+
+    my_canvas.create_rectangle(540,180,825,670,width=3)
+    my_canvas.create_line(540, 530, 825, 530, width=3)
+    my_canvas.create_rectangle(20, 180, 525, 670, width=3)
+    my_canvas.create_rectangle(840, 180, 1325, 670, width=3)
+    my_canvas.create_line(20, 270, 525, 270, width=3)
+    my_canvas.create_line(20, 350, 525, 350, width=3)
+
+    camera_img = PhotoImage(file='camera.png')
+    camera_img_btn=Button(mroot,text="Camera",font=('Times New Roman', 14),image=camera_img,borderwidth=0,compound="top")
+
+    camera_img_btn.place(x=580,y=270)
+    game_img = ImageTk.PhotoImage(Image.open('game.png'))
+    game_img_btn = Button(mroot, text="Game", font=('Times New Roman', 14), image=game_img, borderwidth=0,
+                            compound="top")
+
+    game_img_btn.place(x=700, y=270)
+
+    battery_img =PhotoImage(file='battery.png')
+    battery_img_btn = Button(mroot, text="Battery", font=('Times New Roman', 14), image=battery_img, borderwidth=0,
+                            compound="top")
+
+    battery_img_btn.place(x=580, y=400)
+
+    G5_img = ImageTk.PhotoImage(Image.open('5G.png'))
+    G5_img_btn = Button(mroot, text="5G", font=('Times New Roman', 14), image=G5_img, borderwidth=0,
+                          compound="top")
+
+    G5_img_btn.place(x=700, y=400)
+
+    my_canvas.create_text(680, 570, text="You can follow  us  in\n these social platform.",
+                          font=('Times New Roman', 17, "bold"))
+
+
+    facebook_img = PhotoImage(file='facebook.png')
+    facebook_img_btn = Button(mroot, image=facebook_img, borderwidth=0)
+    facebook_img_btn.place(x=600, y=600)
+
+    insta_img = PhotoImage(file='instagram.png')
+    insta_img_btn = Button(mroot, image=insta_img, borderwidth=0)
+    insta_img_btn.place(x=660, y=600)
+
+    twitter_img = PhotoImage(file='twitter.png')
+    twitter_img_btn = Button(mroot, image=twitter_img, borderwidth=0)
+    twitter_img_btn.place(x=720, y=600)
+
     mroot.mainloop()
-
 
 
 conn = sqlite3.connect('address_book.db')
@@ -138,6 +179,11 @@ c = conn.cursor()
 
 
 def submit():
+    if user_name.get() == "" or address.get() == "" or email.get() == "" or password.get() == "":
+        messagebox.showinfo("Warning", "Please Fill and Select all the question ")
+    else:
+        messagebox.showinfo("Register", "registered")
+        mainpage()
     # create a database or connect to one
     conn = sqlite3.connect('address_book.db')
     # create cursor
@@ -146,22 +192,32 @@ def submit():
     # insert into table
     c.execute("INSERT INTO addresses VALUES(:user_name,:address,:email,:password)", {
         'user_name': user_name.get(),
-        'address':address.get(),
+        'address': address.get(),
         'email': email.get(),
-        'password':password.get()
+        'password': password.get()
     })
-    print('address inserted successfully')
-
     conn.commit()
-
     conn.close()
-
     # clear the text boxes
+
     user_name.delete(0, END)
     address.delete(0, END)
-    email.delete(0,END)
-    password.delete(0,END)
+    email.delete(0, END)
+    password.delete(0, END)
+    agreement.deselect()
+    var.set(None)
+    car.set("Select District")
 
+
+def login_function():
+    conn = sqlite3.connect('address_book.db')
+
+    c = conn.cursor()
+    c.execute("SELECT *,oid FROM addresses")
+    records = c.fetchall()
+
+    conn.commit()
+    conn.close()
 
 
 def query():
@@ -210,19 +266,21 @@ password_label.place(x=600, y=348)
 
 # create text box
 
-user_name = Entry(root, width=16, font=('Times New Roman', 13))
+user_name = Entry(root, text="", width=16, font=('Times New Roman', 13))
 user_name.place(x=695, y=198)
 
-var = IntVar()
-radio1 = Radiobutton(root, text="Male", variable=var, value=1, bg="white").place(x=670, y=228)
-radio2 = Radiobutton(root, text="Female", variable=var, value=2, bg="white").place(x=725, y=228)
-radio3 = Radiobutton(root, text="Other", variable=var, value=3, bg="white").place(x=790, y=228)
+var = StringVar()
+var.set(None)
+radio1 = Radiobutton(root, text="Male", variable=var, value="1", bg="white").place(x=670, y=228)
+radio2 = Radiobutton(root, text="Female", variable=var, value="2", bg="white").place(x=725, y=228)
+radio3 = Radiobutton(root, text="Other", variable=var, value="3", bg="white").place(x=790, y=228)
 
-district_list = ['Kathmandu', 'Pokhara', 'Biratnagar', 'Kavre', 'Dhankuta', 'other'];
-c = StringVar()
-droplist = OptionMenu(root, c, *district_list)
+district_list = ['Kathmandu', 'Pokhara', 'Biratnagar', 'Kavre', 'Dhankuta', 'other']
+car = StringVar()
+car.set('Select District')
+droplist = OptionMenu(root, car, *district_list)
 droplist.config(width=15, bg="white", font=('Times New Roman', 11), borderwidth=0)
-c.set('Select district')
+
 droplist.place(x=695, y=258)
 
 address = Entry(root, width=16, font=('Times New Roman', 13))
@@ -231,12 +289,13 @@ address.place(x=695, y=288)
 email = Entry(root, width=16, font=('Times New Roman', 13))
 email.place(x=695, y=318)
 
-password = Entry(root, width=16, font=('Times New Roman', 13))
+password = Entry(root, width=16, font=('Times New Roman', 13),show="*")
 password.place(x=695, y=348)
 
 var1 = StringVar()
+var1.set(None)
 agreement = Checkbutton(root, text="I agree the terms and conditions.", font=('Times New Roman', 12, "bold"),
-                        variable=var1, bg="white")
+                        variable=var1, value=None, bg="white")
 agreement.deselect()
 agreement.place(x=600, y=370)
 # create submit button
@@ -259,7 +318,7 @@ def login_fn():
     # for making the full screen.
     lroot.geometry("%dx%d+0+0" % (lroot.winfo_screenwidth(), lroot.winfo_screenheight()))
     # Login background image.
-    image_login = ImageTk.PhotoImage(Image.open('login.jpg'))
+    image_login = ImageTk.PhotoImage(Image.open('login.png'))
     login_page_img = Label(lroot, image=image_login).place(x=0, y=0)
     login_inside = Label(lroot, text="Login Here", fg="blue", font=('Times New Roman', 20, "bold"), bg="white")
     login_inside.place(x=660, y=180)
@@ -269,18 +328,19 @@ def login_fn():
     user_name.place(x=690, y=250)
     password_label = Label(lroot, text="Password", font=('Times New Roman', 13), bg="white")
     password_label.place(x=600, y=300)
-    password = Entry(lroot, width=16, font=('Times New Roman', 13))
+    password = Entry(lroot, width=16, font=('Times New Roman', 13), show="*")
     password.place(x=690, y=300)
 
     def forget():
         global image_forget
+        global login_email_btn
         froot = Toplevel()
         froot.title('Smartphone city')
         froot.iconbitmap('smartphone2.ico')
         # for making the full screen.
         froot.geometry("%dx%d+0+0" % (froot.winfo_screenwidth(), froot.winfo_screenheight()))
         # Login background image.
-        image_forget = ImageTk.PhotoImage(Image.open('login.jpg'))
+        image_forget = ImageTk.PhotoImage(Image.open('login.png'))
         forget_page_img = Label(froot, image=image_forget).place(x=0, y=0)
         forgpas = Label(froot, text="Forget Password??", font=('Times New Roman', 20, "bold"), fg="red", bg="white")
         forgpas.place(x=610, y=150)
@@ -294,12 +354,25 @@ def login_fn():
         registered_email.place(x=620, y=300)
 
         def send():
+            submit_btn_img['state'] = NORMAL
             registered_email.delete(0, END)
+            messagebox.showwarning("Email send", "5 digit code has ben sent to your email")
 
         forget_submit_btn = Button(froot, text="SEND", command=send, fg="white", bg="blue",
                                    font=('Times New Roman', 15, "bold"),
                                    borderwidth=0)
         forget_submit_btn.place(x=680, y=340)
+
+        code = Label(froot, text="Enter the 5 digit code \n obtained in your email.",
+                     font=('Times New Roman', 12, "bold"), bg="white")
+        code.place(x=650, y=390)
+        code_entry = Entry(froot, width=22, font=('Times New Roman', 13))
+        code_entry.place(x=620, y=430)
+
+        login_email_btn = PhotoImage(file='register.png')
+        submit_btn_img = Button(froot, text="Login", bg="white", state=DISABLED, font=('Times New Roman', 15, "bold"),
+                                image=login_email_btn, compound=CENTER, borderwidth=0)
+        submit_btn_img.place(x=660, y=470)
 
     forget_btn = Button(lroot, text="Forget password?", command=forget, fg="red", bg="white",
                         font=('Times New Roman', 15, "bold"),
@@ -325,4 +398,4 @@ guest = Button(root, command=mainpage, text="Guest Login", bg="white", font=('Ti
                image=register, compound=CENTER, borderwidth=0)
 guest.place(x=660, y=600)
 
-mainloop()
+root.mainloop()
