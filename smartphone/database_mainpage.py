@@ -1,10 +1,15 @@
 from tkinter import *
-
+from PIL import ImageTk, Image
 from tkinter import messagebox
 import sqlite3
 root = Tk()
 root.title('Database GUI')
-root.geometry('600x600')
+root.geometry("%dx%d+0+0" % (root.winfo_screenwidth(), root.winfo_screenheight()))
+login = ImageTk.PhotoImage(Image.open('smartphone.png'))
+login_img = Label(root, image=login).place(x=0, y=0)
+
+frame=LabelFrame(root,text="",padx=10,pady=10)
+frame.place(x=500,y=10)
 #Databases
 # Create a databases or connect to one
 conn = sqlite3.connect('address_book2.db')
@@ -41,7 +46,7 @@ def delete():
     print_record = ''
     for record in records:
         # str(record[6]) added for displaying the id
-        print_record += str(record[0]) + ' ' + str(record[1]) + ' ' + '\t' + str(record[8]) + "\n"
+        print_record += str(record[0]) + '       ' + str(record[1]) + '      ' + '\t' + str(record[8]) + "\n"
     query_label = Label(root, text=print_record)
     query_label.grid(row=12, column=0, columnspan=2)
     conn.commit()
@@ -86,7 +91,7 @@ def edit():
     global editor
     editor = Tk()
     editor.title('Update Data')
-    editor.geometry('300x480')
+    editor.geometry('350x250')
     # Create a databases or connect to one
     conn = sqlite3.connect('address_book2.db')
     # Create cursor
@@ -203,8 +208,8 @@ def query():
     print_record=''
     for record in records:
         #str(record[6]) added for displaying the id
-        print_record += str(record[0]) + ' ' + str(record[5]) + ' '+ '\t' + str(record[8]) + "\n"
-    query_label = Label(root, text=print_record)
+        print_record += str(record[0]) + '' + str(record[5]) + ''+ '\t' + str(record[8]) + "\n"
+    query_label = Label(frame, text=print_record)
     query_label.grid(row=0, column=4, rowspan=50)
 
     conn.commit()
@@ -212,58 +217,58 @@ def query():
 
 
 # Create text boxes
-smartphone = Entry(root, width=30)
+smartphone = Entry(frame, width=30)
 smartphone.grid(row=0, column=1, padx=20, pady=(10,0))
-brand = Entry(root, width=30)
+brand = Entry(frame, width=30)
 brand.grid(row=1, column=1)
-processor= Entry(root, width=30)
+processor= Entry(frame, width=30)
 processor.grid(row=2, column=1)
-GPU= Entry(root, width=30)
+GPU= Entry(frame, width=30)
 GPU.grid(row=3, column=1)
-RAM= Entry(root, width=30)
+RAM= Entry(frame, width=30)
 RAM.grid(row=4, column=1)
-storage = Entry(root, width=30)
+storage = Entry(frame, width=30)
 storage.grid(row=5, column=1)
-price= Entry(root, width=30)
+price= Entry(frame, width=30)
 price.grid(row=6, column=1)
-speciality= Entry(root, width=30)
+speciality= Entry(frame, width=30)
 speciality.grid(row=7, column=1)
-delete_box = Entry(root, width=30)
+delete_box = Entry(frame, width=30)
 delete_box.grid(row=10, column=1, pady=5)
 # Create textbox labels
-smartphone_label = Label(root, text="Smartphone name")
+smartphone_label = Label(frame, text="Smartphone name")
 smartphone_label.grid(row=0, column=0, pady=(10,0))
-brand_label = Label(root, text="brand name")
+brand_label = Label(frame, text="brand name")
 brand_label.grid(row=1, column=0)
-processor_label = Label(root, text="processor")
+processor_label = Label(frame, text="processor")
 processor_label.grid(row=2, column=0)
-GPU_label = Label(root, text="GPU")
+GPU_label = Label(frame, text="GPU")
 GPU_label.grid(row=3, column=0)
 
-RAM_label = Label(root, text="RAM")
+RAM_label = Label(frame, text="RAM")
 RAM_label.grid(row=4, column=0)
-storage_label = Label(root, text="Storage")
+storage_label = Label(frame, text="Storage")
 storage_label.grid(row=5, column=0)
 
-price_label = Label(root, text="price")
+price_label = Label(frame, text="price")
 price_label.grid(row=6, column=0)
-speciality_label = Label(root, text="Speciality")
+speciality_label = Label(frame, text="Speciality")
 speciality_label.grid(row=7, column=0)
-delete_box_label = Label(root, text="Select ID")
+delete_box_label = Label(frame, text="Select ID")
 delete_box_label.grid(row=10, column=0, pady=5)
 
 # Create submit button
-submit_btn = Button(root, text="Add Records", command=submit)
+submit_btn = Button(frame, text="Add Records", command=submit)
 submit_btn.grid(row=8, column=0, columnspan=2, pady=10, padx=10, ipadx=100)
 # Create query button
-query_btn = Button(root, text="Show Records", command=query)
+query_btn = Button(frame, text="Show Records", command=query)
 query_btn.grid(row=9, column=0, columnspan=2, pady=10, padx=10, ipadx=100)
 
 # Create a delete button
-delete_btn = Button(root, text="Delete", command=delete)
+delete_btn = Button(frame, text="Delete", command=delete)
 delete_btn.grid(row=15, column=0, columnspan=2, pady=10, padx =10, ipadx=120)
 # Create a update button
-edit_btn = Button(root, text="Update", command=edit)
+edit_btn = Button(frame, text="Update", command=edit)
 edit_btn.grid(row=17, column=0, columnspan=2, pady=10, padx =10, ipadx=120)
 
 # commit change
