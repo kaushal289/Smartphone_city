@@ -47,8 +47,8 @@ def delete():
     for record in records:
         # str(record[6]) added for displaying the id
         print_record += str(record[0]) + '       ' + str(record[1]) + '      ' + '\t' + str(record[8]) + "\n"
-    query_label = Label(root, text=print_record)
-    query_label.grid(row=12, column=0, columnspan=2)
+    query_label = Label(frame, text=print_record)
+    query_label.grid(row=0, column=4,rowspan=50)
     conn.commit()
     conn.close()
 #Creating an update function
