@@ -37,6 +37,7 @@ def delete():
     c = conn.cursor()
     #delete a record
     c.execute("DELETE from addresses WHERE oid = " + delete_box.get())
+
     print('Deleted Successfully')
     # query of the database
     c.execute("SELECT *, oid FROM addresses")
