@@ -5,7 +5,7 @@ import sqlite3
 
 root = Tk()
 # Title of project with icon picture.
-root.title('Smartphone city')
+root.title('Smartphone management system(Registration and login)')
 root.iconbitmap('smartphone2.ico')
 # for making the full screen.
 root.geometry("%dx%d+0+0" % (root.winfo_screenwidth(), root.winfo_screenheight()))
@@ -26,14 +26,17 @@ c.execute(""" CREATE TABLE login(
       email text
 ) """)
 '''
+
 # commit change
 conn.commit()
 # close connection
 conn.close()
-
+#This is the function of the page after you login or register.
 def mainpage():
     root.withdraw()
     mroot = Toplevel()
+    mroot.title('Smartphone Management System')
+    mroot.iconbitmap('smartphone2.ico')
     mroot.geometry("%dx%d+0+0" % (root.winfo_screenwidth(), root.winfo_screenheight()))
     background_img = PhotoImage(file='background1.png')
     # creating a canvas
@@ -41,7 +44,7 @@ def mainpage():
     my_canvas.pack(fill="both", expand=True)
     # setting background image in canvas.
     my_canvas.create_image(0, 0, image=background_img, anchor="nw")
-
+    #Images that you can change by pressing button.
     my_img1 = PhotoImage(file='mobile1.png')
     my_img2 = PhotoImage(file='mobile2.png')
     my_img3 = PhotoImage(file='mobile3.png')
@@ -52,7 +55,7 @@ def mainpage():
     back1 = ImageTk.PhotoImage(Image.open('back.png'))
     my_label = Label(mroot, image=my_img3).place(x=890, y=240)
     my_canvas.create_text(1080, 210, text="Some pictures of smartphones:", font=('Times New Roman', 18, "bold"))
-
+    #Function for changing image forward or backward.
     def forward(image_number):
         global my_label
         global button_forward
@@ -66,6 +69,7 @@ def mainpage():
         button_back.place(x=1010, y=570)
         button_forward.place(x=1090, y=570)
 
+    # Function for changing image forward or backward.
     def back(image_number):
         global my_label
         global button_forward
@@ -81,11 +85,13 @@ def mainpage():
         button_forward.place(x=1090, y=570)
 
 
-
+    #function for the smartphone to search by its name.
     def info_page():
         global  smartphone_search_page_img
         iroot=Toplevel()
         iroot.geometry("%dx%d+0+0" % (iroot.winfo_screenwidth(), iroot.winfo_screenheight()))
+        iroot.title('Smartphone Management System')
+        iroot.iconbitmap('smartphone2.ico')
         smartphone_search_page_img = ImageTk.PhotoImage(Image.open('smartphone2.png'))
         login_img = Label(iroot, image=smartphone_search_page_img).place(x=0, y=0)
 
@@ -96,37 +102,36 @@ def mainpage():
             # query of the database
         c.execute("SELECT *, oid FROM addresses")
         records = c.fetchall()
-            # print(records)
             # Loop through the results
-
         global go_backimg
         for record in records:
-            if str(record[0]) == smartphone_entry.get():
+            if str(record[0]) == (smartphone_entry.get()).lower():
                 # str(record[6]) added for displaying the id
                 try:
-                    sm_name=Label(iroot,text=str(record[0]),font=("Times New Roman",11,'bold'))
-                    sm_name.place(x=315,y=250)
+                    sm_name=Label(iroot,text=str(record[0]),font=("Times New Roman",14))
+                    sm_name.place(x=210,y=220)
 
-                    sm_brand = Label(iroot, text=str(record[1]), font=("Times New Roman", 11, 'bold'))
-                    sm_brand.place(x=460, y=250)
 
-                    sm_chipset = Label(iroot, text=str(record[2]), font=("Times New Roman", 10, 'bold'))
-                    sm_chipset.place(x=545, y=250)
+                    sm_brand = Label(iroot, text=str(record[1]), font=("Times New Roman", 14))
+                    sm_brand.place(x=430, y=220)
 
-                    sm_GPU = Label(iroot, text=str(record[3]), font=("Times New Roman", 10, 'bold'))
-                    sm_GPU.place(x=670, y=250)
+                    sm_chipset = Label(iroot, text=str(record[2]), font=("Times New Roman", 14))
+                    sm_chipset.place(x=520, y=220)
 
-                    sm_RAM = Label(iroot, text=str(record[4]), font=("Times New Roman", 11, 'bold'))
-                    sm_RAM.place(x=780, y=250)
+                    sm_GPU = Label(iroot, text=str(record[3]), font=("Times New Roman", 14))
+                    sm_GPU.place(x=690, y=220)
 
-                    sm_storage = Label(iroot, text=str(record[5]), font=("Times New Roman", 11, 'bold'))
-                    sm_storage.place(x=840, y=250)
+                    sm_RAM = Label(iroot, text=str(record[4]), font=("Times New Roman", 14))
+                    sm_RAM.place(x=860, y=220)
 
-                    sm_price = Label(iroot, text=str(record[6]), font=("Times New Roman", 11, 'bold'))
-                    sm_price.place(x=910, y=250)
+                    sm_storage = Label(iroot, text=str(record[5]), font=("Times New Roman", 14))
+                    sm_storage.place(x=930, y=220)
 
-                    sm_speciality = Label(iroot, text=str(record[7]), font=("Times New Roman", 11, 'bold'))
-                    sm_speciality.place(x=990, y=250)
+                    sm_price = Label(iroot, text="Rs"+str(record[6]), font=("Times New Roman", 14))
+                    sm_price.place(x=1010, y=220)
+
+                    sm_speciality = Label(iroot, text=str(record[7]), font=("Times New Roman", 14))
+                    sm_speciality.place(x=1115, y=220)
 
 
 
@@ -141,48 +146,50 @@ def mainpage():
 
 
 
-        smartphone_name1=Label(iroot,text="Smartphone name",bg="white",font=('Times New Roman',13,'bold')).place(x=310,y=177)
-        smartphone_brand1 = Label(iroot, text="Brand",bg="white", font=('Times New Roman', 13, 'bold')).place(x=470,y=177)
+        smartphone_name1=Label(iroot,text="Smartphone name",fg="white",bg="black",font=('Times New Roman',16,'bold')).place(x=220,y=177)
+        smartphone_brand1 = Label(iroot, text="Brand",fg="white",bg="black", font=('Times New Roman', 16, 'bold')).place(x=430,y=177)
 
-        processor_name1 = Label(iroot, text="Chipset",bg="white", font=('Times New Roman', 13, 'bold')).place(x=570,y=177)
+        processor_name1 = Label(iroot, text="Chipset",fg="white",bg="black", font=('Times New Roman', 16, 'bold')).place(x=560,y=177)
 
-        GPU1 = Label(iroot, text="GPU",bg="white", font=('Times New Roman', 13, 'bold')).place(x=700,y=177)
-        RAM1 = Label(iroot, text="RAM",bg="white",font=('Times New Roman', 13, 'bold')).place(x=775, y=177)
+        GPU1 = Label(iroot, text="GPU",fg="white",bg="black", font=('Times New Roman', 16, 'bold')).place(x=750,y=177)
+        RAM1 = Label(iroot, text="RAM",fg="white",bg="black",font=('Times New Roman', 16, 'bold')).place(x=860, y=177)
 
-        storage1 = Label(iroot, text="Storage",bg="white", font=('Times New Roman', 13, 'bold')).place(x=830, y=177)
+        storage1 = Label(iroot, text="Storage",fg="white",bg="black", font=('Times New Roman', 16, 'bold')).place(x=925, y=177)
 
-        price1 = Label(iroot, text="Price", bg="white",font=('Times New Roman', 13, 'bold')).place(x=915, y=177)
+        price1 = Label(iroot, text="Price", fg="white",bg="black",font=('Times New Roman', 16, 'bold')).place(x=1025, y=177)
 
-        speciality1 = Label(iroot, text="Speciality",bg="white",font=('Times New Roman', 13, 'bold')).place(x=980, y=177)
-
-
+        speciality1 = Label(iroot, text="Speciality",fg="white",bg="black",font=('Times New Roman', 16, 'bold')).place(x=1105, y=177)
 
 
+
+    #function to check if the smartphone entered by user matches to the database or not.
     def samrtphone_name_search():
-        # Create a databases or connect to one
+        # Connecring to database
         conn = sqlite3.connect('address_book2.db')
-        # Create cursor
+        # Creating  cursor
         c = conn.cursor()
-        # query of the database
         c.execute("SELECT *, oid FROM addresses")
         records = c.fetchall()
         # Loop through the results
-
-
-
-
-
         for record in records:
-            if str(record[0]) == smartphone_entry.get():
-                # str(record[6]) added for displaying the id
+            if str(record[0]) == (smartphone_entry.get()).lower():
                 try:
-                    messagebox.showinfo("Found", "Smartphone was found", parent=mroot)
                     return info_page()
 
                 except:
                     pass
+            elif smartphone_entry.get()=="":
+                try:
+                    return messagebox.showinfo("Sorry", "Please enter name of mobile",parent=mroot)
+                except:
+                    pass
 
-        return messagebox.showinfo("Sorry", "No such smartphone was found or try using all small letters.", parent=mroot)
+        return messagebox.showinfo("Sorry", "No such smartphone was found.", parent=mroot)
+
+
+
+
+
         a=1
 
 
@@ -208,12 +215,14 @@ def mainpage():
 
     my_canvas.create_text(130, 320, text="Smart-phone brand:", font=('Times New Roman', 14))
 
-
+    #function to search smartphone by its brand using database.
     def brand_page():
         global  smartphone_search_page_img
         global go_backimg
         broot=Toplevel()
         broot.geometry("%dx%d+0+0" % (broot.winfo_screenwidth(), broot.winfo_screenheight()))
+        broot.title('Smartphone Management System')
+        broot.iconbitmap('smartphone2.ico')
         smartphone_search_page_img = ImageTk.PhotoImage(Image.open('smartphone2.png'))
         login_img = Label(broot, image=smartphone_search_page_img).place(x=0, y=0)
 
@@ -244,46 +253,42 @@ def mainpage():
                     print_GPU += str(record[3]) + "\n"
                     print_RAM += str(record[4]) + "\n"
                     print_storage += str(record[5]) + "\n"
-                    print_price += str(record[6]) + "\n"
+                    print_price += "Rs"+str(record[6]) + "\n"
                     print_speciality += str(record[7]) + "\n"
-                sm_label = Label(broot, text=print_smartphone,font=('times new roman',12))
-                sm_label.place(x=310, y=220)
-                bd_label = Label(broot, text=print_brand,font=('times new roman',12))
-                bd_label.place(x=470, y=220)
-                pro_label = Label(broot, text=print_processor,font=('times new roman',12))
-                pro_label.place(x=545, y=220)
-                GU_label = Label(broot, text=print_GPU,font=('times new roman',12))
-                GU_label.place(x=670, y=220)
-                RM_label = Label(broot, text=print_RAM,font=('times new roman',12))
-                RM_label.place(x=780, y=220)
-                storage_label = Label(broot, text=print_storage,font=('times new roman',12))
-                storage_label.place(x=840, y=220)
-                pri_label = Label(broot, text=print_price,font=('times new roman',12))
-                pri_label.place(x=910, y=220)
-                speciality_label = Label(broot, text=print_speciality,font=('times new roman',12))
-                speciality_label.place(x=990, y=220)
+                sm_label = Label(broot, text=print_smartphone,font=('times new roman',14))
+                sm_label.place(x=210,y=220)
+                bd_label = Label(broot, text=print_brand,font=('times new roman',14))
+                bd_label.place( x = 430, y = 220)
+                pro_label = Label(broot, text=print_processor,font=('times new roman',14))
+                pro_label.place(x = 520, y = 220)
+                GU_label = Label(broot, text=print_GPU,font=('times new roman',14))
+                GU_label.place(x = 690, y = 220)
+                RM_label = Label(broot, text=print_RAM,font=('times new roman',14))
+                RM_label.place(x = 860, y = 220)
+                storage_label = Label(broot, text=print_storage,font=('times new roman',14))
+                storage_label.place(x = 930, y = 220)
+                pri_label = Label(broot, text=print_price,font=('times new roman',14))
+                pri_label.place(x = 1010, y = 220)
+                speciality_label = Label(broot, text=print_speciality,font=('times new roman',14))
+                speciality_label.place(x = 1115, y = 220)
 
             except:
                 pass
 
+        smartphone_name1=Label(broot,text="Smartphone name",fg="white",bg="black",font=('Times New Roman',16,'bold')).place(x=220,y=177)
+        smartphone_brand1 = Label(broot, text="Brand",fg="white",bg="black", font=('Times New Roman', 16, 'bold')).place(x=430,y=177)
 
+        processor_name1 = Label(broot, text="Chipset",fg="white",bg="black", font=('Times New Roman', 16, 'bold')).place(x=560,y=177)
 
-        smartphone_name1 = Label(broot, text="Smartphone name", bg="white", font=('Times New Roman', 13, 'bold')).place(
-            x=310, y=177)
-        smartphone_brand1 = Label(broot, text="Brand", bg="white", font=('Times New Roman', 13, 'bold')).place(x=470,
-                                                                                                               y=177)
+        GPU1 = Label(broot, text="GPU",fg="white",bg="black", font=('Times New Roman', 16, 'bold')).place(x=750,y=177)
+        RAM1 = Label(broot, text="RAM",fg="white",bg="black",font=('Times New Roman', 16, 'bold')).place(x=860, y=177)
 
-        processor_name1 = Label(broot, text="Chipset", bg="white", font=('Times New Roman', 13, 'bold')).place(x=570,
-                                                                                                               y=177)
+        storage1 = Label(broot, text="Storage",fg="white",bg="black", font=('Times New Roman', 16, 'bold')).place(x=925, y=177)
 
-        GPU1 = Label(broot, text="GPU", bg="white", font=('Times New Roman', 13, 'bold')).place(x=700, y=177)
-        RAM1 = Label(broot, text="RAM", bg="white", font=('Times New Roman', 13, 'bold')).place(x=775, y=177)
+        price1 = Label(broot, text="Price", fg="white",bg="black",font=('Times New Roman', 16, 'bold')).place(x=1025, y=177)
 
-        storage1 = Label(broot, text="Storage", bg="white", font=('Times New Roman', 13, 'bold')).place(x=830, y=177)
+        speciality1 = Label(broot, text="Speciality",fg="white",bg="black",font=('Times New Roman', 16, 'bold')).place(x=1105, y=177)
 
-        price1 = Label(broot, text="Price", bg="white", font=('Times New Roman', 13, 'bold')).place(x=915, y=177)
-
-        speciality1 = Label(broot, text="Speciality", bg="white", font=('Times New Roman', 13, 'bold')).place(x=980,y=177)
         go_backimg = ImageTk.PhotoImage(Image.open('back1.png'))
         go_back = Button(broot, image=go_backimg, borderwidth=5, command=broot.destroy)
         go_back.place(x=610, y=550)
@@ -292,7 +297,7 @@ def mainpage():
         conn.close()
 
 
-
+    #function to check if user has selected any brand or not.
     def brand_name_search():
         # Create a databases or connect to one
         conn = sqlite3.connect('address_book2.db')
@@ -307,7 +312,6 @@ def mainpage():
             if str(record[1]) == c.get():
                 # str(record[6]) added for displaying the id
                 try:
-                    messagebox.showinfo("Found", "Smartphone were found", parent=mroot)
                     return brand_page()
 
                 except:
@@ -331,12 +335,14 @@ def mainpage():
     my_canvas.create_text(270, 370, text="Search smart-phone by the budget category.",
                           font=('Times New Roman', 17, "bold"))
     my_canvas.create_text(115, 500, text="Budget catogeries:", font=('Times New Roman', 13))
-
+    #Function to search smartphone by the user budget using database.
     def radio_page():
         global  smartphone_search_page_img
         global go_backimg
         rroot=Toplevel()
         rroot.geometry("%dx%d+0+0" % (rroot.winfo_screenwidth(), rroot.winfo_screenheight()))
+        rroot.title('Smartphone Management System')
+        rroot.iconbitmap('smartphone2.ico')
         smartphone_search_page_img = ImageTk.PhotoImage(Image.open('smartphone2.png'))
         login_img = Label(rroot, image=smartphone_search_page_img).place(x=0, y=0)
 
@@ -373,52 +379,58 @@ def mainpage():
                     print_GPU += str(record[3]) + "\n"
                     print_RAM += str(record[4]) + "\n"
                     print_storage += str(record[5]) + "\n"
-                    print_price += str(record[6]) + "\n"
+                    print_price += "Rs"+str(record[6]) + "\n"
                     print_speciality += str(record[7]) + "\n"
-                sm_label = Label(rroot, text=print_smartphone,font=('times new roman',12))
-                sm_label.place(x=310, y=220)
-                bd_label = Label(rroot, text=print_brand,font=('times new roman',12))
-                bd_label.place(x=470, y=220)
-                pro_label = Label(rroot, text=print_processor,font=('times new roman',12))
-                pro_label.place(x=545, y=220)
-                GU_label = Label(rroot, text=print_GPU,font=('times new roman',12))
-                GU_label.place(x=670, y=220)
-                RM_label = Label(rroot, text=print_RAM,font=('times new roman',12))
-                RM_label.place(x=780, y=220)
-                storage_label = Label(rroot, text=print_storage,font=('times new roman',12))
-                storage_label.place(x=840, y=220)
-                pri_label = Label(rroot, text=print_price,font=('times new roman',12))
-                pri_label.place(x=910, y=220)
-                speciality_label = Label(rroot, text=print_speciality,font=('times new roman',12))
-                speciality_label.place(x=990, y=220)
+                sm_label = Label(rroot, text=print_smartphone, font=('times new roman', 14))
+                sm_label.place(x=210, y=220)
+                bd_label = Label(rroot, text=print_brand, font=('times new roman', 14))
+                bd_label.place(x=430, y=220)
+                pro_label = Label(rroot, text=print_processor, font=('times new roman', 14))
+                pro_label.place(x=520, y=220)
+                GU_label = Label(rroot, text=print_GPU, font=('times new roman', 14))
+                GU_label.place(x=690, y=220)
+                RM_label = Label(rroot, text=print_RAM, font=('times new roman', 14))
+                RM_label.place(x=860, y=220)
+                storage_label = Label(rroot, text=print_storage, font=('times new roman', 14))
+                storage_label.place(x=930, y=220)
+                pri_label = Label(rroot, text=print_price, font=('times new roman', 14))
+                pri_label.place(x=1010, y=220)
+                speciality_label = Label(rroot, text=print_speciality, font=('times new roman', 14))
+                speciality_label.place(x=1115, y=220)
+
 
 
 
             except:
                 pass
-        smartphone_name1 = Label(rroot, text="Smartphone name", bg="white", font=('Times New Roman', 13, 'bold')).place(
-            x=310, y=177)
-        smartphone_brand1 = Label(rroot, text="Brand", bg="white", font=('Times New Roman', 13, 'bold')).place(x=470,
-                                                                                                               y=177)
+        smartphone_name1 = Label(rroot, text="Smartphone name", fg="white", bg="black",
+                                 font=('Times New Roman', 16, 'bold')).place(x=220, y=177)
+        smartphone_brand1 = Label(rroot, text="Brand", fg="white", bg="black",
+                                  font=('Times New Roman', 16, 'bold')).place(x=430, y=177)
 
-        processor_name1 = Label(rroot, text="Chipset", bg="white", font=('Times New Roman', 13, 'bold')).place(x=570,
-                                                                                                               y=177)
+        processor_name1 = Label(rroot, text="Chipset", fg="white", bg="black",
+                                font=('Times New Roman', 16, 'bold')).place(x=560, y=177)
 
-        GPU1 = Label(rroot, text="GPU", bg="white", font=('Times New Roman', 13, 'bold')).place(x=700, y=177)
-        RAM1 = Label(rroot, text="RAM", bg="white", font=('Times New Roman', 13, 'bold')).place(x=775, y=177)
+        GPU1 = Label(rroot, text="GPU", fg="white", bg="black", font=('Times New Roman', 16, 'bold')).place(x=750,
+                                                                                                            y=177)
+        RAM1 = Label(rroot, text="RAM", fg="white", bg="black", font=('Times New Roman', 16, 'bold')).place(x=860,
+                                                                                                            y=177)
 
-        storage1 = Label(rroot, text="Storage", bg="white", font=('Times New Roman', 13, 'bold')).place(x=830, y=177)
+        storage1 = Label(rroot, text="Storage", fg="white", bg="black", font=('Times New Roman', 16, 'bold')).place(
+            x=925, y=177)
 
-        price1 = Label(rroot, text="Price", bg="white", font=('Times New Roman', 13, 'bold')).place(x=915, y=177)
+        price1 = Label(rroot, text="Price", fg="white", bg="black", font=('Times New Roman', 16, 'bold')).place(x=1025,
+                                                                                                                y=177)
 
-        speciality1 = Label(rroot, text="Speciality", bg="white", font=('Times New Roman', 13, 'bold')).place(x=980,y=177)
+        speciality1 = Label(rroot, text="Speciality", fg="white", bg="black",
+                            font=('Times New Roman', 16, 'bold')).place(x=1105, y=177)
         go_backimg = ImageTk.PhotoImage(Image.open('back1.png'))
         go_back = Button(rroot, image=go_backimg, borderwidth=5, command=rroot.destroy)
         go_back.place(x=610, y=550)
 
         conn.commit()
         conn.close()
-
+    #function to check if user has selescted any budget or not.
     def radio_name_search():
         # Create a databases or connect to one
         conn = sqlite3.connect('address_book2.db')
@@ -440,7 +452,7 @@ def mainpage():
                         "300000")):
                 # str(record[6]) added for displaying the id
                 try:
-                    messagebox.showinfo("Found", "Smartphone were found", parent=mroot)
+
                     return radio_page()
 
                 except:
@@ -478,11 +490,10 @@ def mainpage():
     ]
     var1 = StringVar()
     var1.set("0")
-    my_canvas.create_rectangle(180, 390, 430, 620, fill="lightblue")
-    frame = LabelFrame(mroot, text="", padx=7, pady=10)
-    frame.place(x=187, y=400)
+    frame = LabelFrame(mroot, text="", padx=7, pady=10,bg='lightblue',borderwidth=5)
+    frame.place(x=180, y=400)
     for text, mode in MODES:
-        Radiobutton(frame, text=text,font=('times new roman',11), variable=var1, value=mode).pack(anchor=W)
+        Radiobutton(frame, text=text,font=('times new roman',12),bg="lightblue",variable=var1, value=mode).pack(anchor=W)
 
 
 
@@ -498,14 +509,16 @@ def mainpage():
     my_canvas.create_rectangle(840, 180, 1325, 670, width=4, outline="lightBLUE")
     my_canvas.create_line(20, 270, 525, 270, width=4, fill="lightblue")
     my_canvas.create_line(20, 350, 525, 350, width=4, fill="lightblue")
-
+    #Function for searching camera smartphone by clicking the camera button.
     def image_camera_page():
         global  smartphone_search_page_img
         global go_backimg
-        iroot=Toplevel()
-        iroot.geometry("%dx%d+0+0" % (iroot.winfo_screenwidth(), iroot.winfo_screenheight()))
+        imroot=Toplevel()
+        imroot.geometry("%dx%d+0+0" % (imroot.winfo_screenwidth(), imroot.winfo_screenheight()))
+        imroot.title('Smartphone Management System')
+        imroot.iconbitmap('smartphone2.ico')
         smartphone_search_page_img = ImageTk.PhotoImage(Image.open('smartphone2.png'))
-        login_img = Label(iroot, image=smartphone_search_page_img).place(x=0, y=0)
+        login_img = Label(imroot, image=smartphone_search_page_img).place(x=0, y=0)
 
         # Create a databases or connect to one
         conn = sqlite3.connect('address_book2.db')
@@ -534,46 +547,51 @@ def mainpage():
                     print_GPU += str(record[3]) + "\n"
                     print_RAM += str(record[4]) + "\n"
                     print_storage += str(record[5]) + "\n"
-                    print_price += str(record[6]) + "\n"
+                    print_price += "Rs"+str(record[6]) + "\n"
                     print_speciality += str(record[7]) + "\n"
 
-                sm_label = Label(iroot, text=print_smartphone,font=('times new roman',12))
-                sm_label.place(x=310, y=220)
-                bd_label = Label(iroot, text=print_brand,font=('times new roman',12))
-                bd_label.place(x=470, y=220)
-                pro_label = Label(iroot, text=print_processor,font=('times new roman',12))
-                pro_label.place(x=545, y=220)
-                GU_label = Label(iroot, text=print_GPU,font=('times new roman',12))
-                GU_label.place(x=670, y=220)
-                RM_label = Label(iroot, text=print_RAM,font=('times new roman',12))
-                RM_label.place(x=780, y=220)
-                storage_label = Label(iroot, text=print_storage,font=('times new roman',12))
-                storage_label.place(x=840, y=220)
-                pri_label = Label(iroot, text=print_price,font=('times new roman',12))
-                pri_label.place(x=910, y=220)
-                speciality_label = Label(iroot, text=print_speciality,font=('times new roman',12))
-                speciality_label.place(x=990, y=220)
+                sm_label = Label(imroot, text=print_smartphone, font=('times new roman', 14))
+                sm_label.place(x=210, y=220)
+                bd_label = Label(imroot, text=print_brand, font=('times new roman', 14))
+                bd_label.place(x=430, y=220)
+                pro_label = Label(imroot, text=print_processor, font=('times new roman', 14))
+                pro_label.place(x=520, y=220)
+                GU_label = Label(imroot, text=print_GPU, font=('times new roman', 14))
+                GU_label.place(x=690, y=220)
+                RM_label = Label(imroot, text=print_RAM, font=('times new roman', 14))
+                RM_label.place(x=860, y=220)
+                storage_label = Label(imroot, text=print_storage, font=('times new roman', 14))
+                storage_label.place(x=930, y=220)
+                pri_label = Label(imroot, text=print_price, font=('times new roman', 14))
+                pri_label.place(x=1010, y=220)
+                speciality_label = Label(imroot, text=print_speciality, font=('times new roman', 14))
+                speciality_label.place(x=1115, y=220)
 
             except:
                 pass
-        smartphone_name1 = Label(iroot, text="Smartphone name", bg="white", font=('Times New Roman', 13, 'bold')).place(
-            x=310, y=177)
-        smartphone_brand1 = Label(iroot, text="Brand", bg="white", font=('Times New Roman', 13, 'bold')).place(x=470,
-                                                                                                               y=177)
+        smartphone_name1 = Label(imroot, text="Smartphone name", fg="white", bg="black",
+                                 font=('Times New Roman', 16, 'bold')).place(x=220, y=177)
+        smartphone_brand1 = Label(imroot, text="Brand", fg="white", bg="black",
+                                  font=('Times New Roman', 16, 'bold')).place(x=430, y=177)
 
-        processor_name1 = Label(iroot, text="Chipset", bg="white", font=('Times New Roman', 13, 'bold')).place(x=570,
-                                                                                                               y=177)
+        processor_name1 = Label(imroot, text="Chipset", fg="white", bg="black",
+                                font=('Times New Roman', 16, 'bold')).place(x=560, y=177)
 
-        GPU1 = Label(iroot, text="GPU", bg="white", font=('Times New Roman', 13, 'bold')).place(x=700, y=177)
-        RAM1 = Label(iroot, text="RAM", bg="white", font=('Times New Roman', 13, 'bold')).place(x=775, y=177)
+        GPU1 = Label(imroot, text="GPU", fg="white", bg="black", font=('Times New Roman', 16, 'bold')).place(x=750,
+                                                                                                            y=177)
+        RAM1 = Label(imroot, text="RAM", fg="white", bg="black", font=('Times New Roman', 16, 'bold')).place(x=860,
+                                                                                                            y=177)
 
-        storage1 = Label(iroot, text="Storage", bg="white", font=('Times New Roman', 13, 'bold')).place(x=830, y=177)
+        storage1 = Label(imroot, text="Storage", fg="white", bg="black", font=('Times New Roman', 16, 'bold')).place(
+            x=925, y=177)
 
-        price1 = Label(iroot, text="Price", bg="white", font=('Times New Roman', 13, 'bold')).place(x=915, y=177)
+        price1 = Label(imroot, text="Price", fg="white", bg="black", font=('Times New Roman', 16, 'bold')).place(x=1025,
+                                                                                                                y=177)
 
-        speciality1 = Label(iroot, text="Speciality", bg="white", font=('Times New Roman', 13, 'bold')).place(x=980,y=177)
+        speciality1 = Label(imroot, text="Speciality", fg="white", bg="black",
+                            font=('Times New Roman', 16, 'bold')).place(x=1105, y=177)
         go_backimg = ImageTk.PhotoImage(Image.open('back1.png'))
-        go_back = Button(iroot, image=go_backimg, borderwidth=5, command=iroot.destroy)
+        go_back = Button(imroot, image=go_backimg, borderwidth=5, command=imroot.destroy)
         go_back.place(x=610, y=550)
 
         conn.commit()
@@ -592,10 +610,13 @@ def mainpage():
     def image_Gaming_page():
         global  smartphone_search_page_img
         global go_backimg
-        iroot=Toplevel()
-        iroot.geometry("%dx%d+0+0" % (iroot.winfo_screenwidth(), iroot.winfo_screenheight()))
+        groot=Toplevel()
+        groot.geometry("%dx%d+0+0" % (groot.winfo_screenwidth(), groot.winfo_screenheight()))
+        groot.title('Smartphone Management System')
+        groot.iconbitmap('smartphone2.ico')
+
         smartphone_search_page_img = ImageTk.PhotoImage(Image.open('smartphone2.png'))
-        login_img = Label(iroot, image=smartphone_search_page_img).place(x=0, y=0)
+        login_img = Label(groot, image=smartphone_search_page_img).place(x=0, y=0)
 
         # Create a databases or connect to one
         conn = sqlite3.connect('address_book2.db')
@@ -624,46 +645,51 @@ def mainpage():
                     print_GPU += str(record[3]) + "\n"
                     print_RAM += str(record[4]) + "\n"
                     print_storage += str(record[5]) + "\n"
-                    print_price += str(record[6]) + "\n"
+                    print_price += "Rs"+str(record[6]) + "\n"
                     print_speciality += str(record[7]) + "\n"
 
-                sm_label = Label(iroot, text=print_smartphone,font=('times new roman',12))
-                sm_label.place(x=310, y=220)
-                bd_label = Label(iroot, text=print_brand,font=('times new roman',12))
-                bd_label.place(x=470, y=220)
-                pro_label = Label(iroot, text=print_processor,font=('times new roman',12))
-                pro_label.place(x=545, y=220)
-                GU_label = Label(iroot, text=print_GPU,font=('times new roman',12))
-                GU_label.place(x=670, y=220)
-                RM_label = Label(iroot, text=print_RAM,font=('times new roman',12))
-                RM_label.place(x=780, y=220)
-                storage_label = Label(iroot, text=print_storage,font=('times new roman',12))
-                storage_label.place(x=840, y=220)
-                pri_label = Label(iroot, text=print_price,font=('times new roman',12))
-                pri_label.place(x=910, y=220)
-                speciality_label = Label(iroot, text=print_speciality,font=('times new roman',12))
-                speciality_label.place(x=990, y=220)
+                sm_label = Label(groot, text=print_smartphone, font=('times new roman', 14))
+                sm_label.place(x=210, y=220)
+                bd_label = Label(groot, text=print_brand, font=('times new roman', 14))
+                bd_label.place(x=430, y=220)
+                pro_label = Label(groot, text=print_processor, font=('times new roman', 14))
+                pro_label.place(x=520, y=220)
+                GU_label = Label(groot, text=print_GPU, font=('times new roman', 14))
+                GU_label.place(x=690, y=220)
+                RM_label = Label(groot, text=print_RAM, font=('times new roman', 14))
+                RM_label.place(x=860, y=220)
+                storage_label = Label(groot, text=print_storage, font=('times new roman', 14))
+                storage_label.place(x=930, y=220)
+                pri_label = Label(groot, text=print_price, font=('times new roman', 14))
+                pri_label.place(x=1010, y=220)
+                speciality_label = Label(groot, text=print_speciality, font=('times new roman', 14))
+                speciality_label.place(x=1115, y=220)
 
             except:
                 pass
-        smartphone_name1 = Label(iroot, text="Smartphone name", bg="white", font=('Times New Roman', 13, 'bold')).place(
-            x=310, y=177)
-        smartphone_brand1 = Label(iroot, text="Brand", bg="white", font=('Times New Roman', 13, 'bold')).place(x=470,
-                                                                                                               y=177)
+        smartphone_name1 = Label(groot, text="Smartphone name", fg="white", bg="black",
+                                 font=('Times New Roman', 16, 'bold')).place(x=220, y=177)
+        smartphone_brand1 = Label(groot, text="Brand", fg="white", bg="black",
+                                  font=('Times New Roman', 16, 'bold')).place(x=430, y=177)
 
-        processor_name1 = Label(iroot, text="Chipset", bg="white", font=('Times New Roman', 13, 'bold')).place(x=570,
-                                                                                                               y=177)
+        processor_name1 = Label(groot, text="Chipset", fg="white", bg="black",
+                                font=('Times New Roman', 16, 'bold')).place(x=560, y=177)
 
-        GPU1 = Label(iroot, text="GPU", bg="white", font=('Times New Roman', 13, 'bold')).place(x=700, y=177)
-        RAM1 = Label(iroot, text="RAM", bg="white", font=('Times New Roman', 13, 'bold')).place(x=775, y=177)
+        GPU1 = Label(groot, text="GPU", fg="white", bg="black", font=('Times New Roman', 16, 'bold')).place(x=750,
+                                                                                                            y=177)
+        RAM1 = Label(groot, text="RAM", fg="white", bg="black", font=('Times New Roman', 16, 'bold')).place(x=860,
+                                                                                                            y=177)
 
-        storage1 = Label(iroot, text="Storage", bg="white", font=('Times New Roman', 13, 'bold')).place(x=830, y=177)
+        storage1 = Label(groot, text="Storage", fg="white", bg="black", font=('Times New Roman', 16, 'bold')).place(
+            x=925, y=177)
 
-        price1 = Label(iroot, text="Price", bg="white", font=('Times New Roman', 13, 'bold')).place(x=915, y=177)
+        price1 = Label(groot, text="Price", fg="white", bg="black", font=('Times New Roman', 16, 'bold')).place(x=1025,
+                                                                                                                y=177)
 
-        speciality1 = Label(iroot, text="Speciality", bg="white", font=('Times New Roman', 13, 'bold')).place(x=980,y=177)
+        speciality1 = Label(groot, text="Speciality", fg="white", bg="black",
+                            font=('Times New Roman', 16, 'bold')).place(x=1105, y=177)
         go_backimg = ImageTk.PhotoImage(Image.open('back1.png'))
-        go_back = Button(iroot, image=go_backimg, borderwidth=5, command=iroot.destroy)
+        go_back = Button(groot, image=go_backimg, borderwidth=5, command=groot.destroy)
         go_back.place(x=610, y=550)
 
         conn.commit()
@@ -677,10 +703,12 @@ def mainpage():
     def image_battery_page():
         global  smartphone_search_page_img
         global go_backimg
-        iroot=Toplevel()
-        iroot.geometry("%dx%d+0+0" % (iroot.winfo_screenwidth(), iroot.winfo_screenheight()))
+        broot=Toplevel()
+        broot.geometry("%dx%d+0+0" % (broot.winfo_screenwidth(), broot.winfo_screenheight()))
+        broot.title('Smartphone Management System')
+        broot.iconbitmap('smartphone2.ico')
         smartphone_search_page_img = ImageTk.PhotoImage(Image.open('smartphone2.png'))
-        login_img = Label(iroot, image=smartphone_search_page_img).place(x=0, y=0)
+        login_img = Label(broot, image=smartphone_search_page_img).place(x=0, y=0)
 
         # Create a databases or connect to one
         conn = sqlite3.connect('address_book2.db')
@@ -709,46 +737,50 @@ def mainpage():
                     print_GPU += str(record[3]) + "\n"
                     print_RAM += str(record[4]) + "\n"
                     print_storage += str(record[5]) + "\n"
-                    print_price += str(record[6]) + "\n"
+                    print_price += "Rs"+str(record[6]) + "\n"
                     print_speciality += str(record[7]) + "\n"
 
-                sm_label = Label(iroot, text=print_smartphone,font=('times new roman',12))
-                sm_label.place(x=310, y=220)
-                bd_label = Label(iroot, text=print_brand,font=('times new roman',12))
-                bd_label.place(x=470, y=220)
-                pro_label = Label(iroot, text=print_processor,font=('times new roman',12))
-                pro_label.place(x=545, y=220)
-                GU_label = Label(iroot, text=print_GPU,font=('times new roman',12))
-                GU_label.place(x=670, y=220)
-                RM_label = Label(iroot, text=print_RAM,font=('times new roman',12))
-                RM_label.place(x=780, y=220)
-                storage_label = Label(iroot, text=print_storage,font=('times new roman',12))
-                storage_label.place(x=840, y=220)
-                pri_label = Label(iroot, text=print_price,font=('times new roman',12))
-                pri_label.place(x=910, y=220)
-                speciality_label = Label(iroot, text=print_speciality,font=('times new roman',12))
-                speciality_label.place(x=990, y=220)
-
+                sm_label = Label(broot, text=print_smartphone, font=('times new roman', 14))
+                sm_label.place(x=210, y=220)
+                bd_label = Label(broot, text=print_brand, font=('times new roman', 14))
+                bd_label.place(x=430, y=220)
+                pro_label = Label(broot, text=print_processor, font=('times new roman', 14))
+                pro_label.place(x=520, y=220)
+                GU_label = Label(broot, text=print_GPU, font=('times new roman', 14))
+                GU_label.place(x=690, y=220)
+                RM_label = Label(broot, text=print_RAM, font=('times new roman', 14))
+                RM_label.place(x=860, y=220)
+                storage_label = Label(broot, text=print_storage, font=('times new roman', 14))
+                storage_label.place(x=930, y=220)
+                pri_label = Label(broot, text=print_price, font=('times new roman', 14))
+                pri_label.place(x=1010, y=220)
+                speciality_label = Label(broot, text=print_speciality, font=('times new roman', 14))
+                speciality_label.place(x=1115, y=220)
             except:
                 pass
-        smartphone_name1 = Label(iroot, text="Smartphone name", bg="white", font=('Times New Roman', 13, 'bold')).place(
-            x=310, y=177)
-        smartphone_brand1 = Label(iroot, text="Brand", bg="white", font=('Times New Roman', 13, 'bold')).place(x=470,
-                                                                                                               y=177)
+        smartphone_name1 = Label(broot, text="Smartphone name", fg="white", bg="black",
+                                 font=('Times New Roman', 16, 'bold')).place(x=220, y=177)
+        smartphone_brand1 = Label(broot, text="Brand", fg="white", bg="black",
+                                  font=('Times New Roman', 16, 'bold')).place(x=430, y=177)
 
-        processor_name1 = Label(iroot, text="Chipset", bg="white", font=('Times New Roman', 13, 'bold')).place(x=570,
-                                                                                                               y=177)
+        processor_name1 = Label(broot, text="Chipset", fg="white", bg="black",
+                                font=('Times New Roman', 16, 'bold')).place(x=560, y=177)
 
-        GPU1 = Label(iroot, text="GPU", bg="white", font=('Times New Roman', 13, 'bold')).place(x=700, y=177)
-        RAM1 = Label(iroot, text="RAM", bg="white", font=('Times New Roman', 13, 'bold')).place(x=775, y=177)
+        GPU1 = Label(broot, text="GPU", fg="white", bg="black", font=('Times New Roman', 16, 'bold')).place(x=750,
+                                                                                                            y=177)
+        RAM1 = Label(broot, text="RAM", fg="white", bg="black", font=('Times New Roman', 16, 'bold')).place(x=860,
+                                                                                                            y=177)
 
-        storage1 = Label(iroot, text="Storage", bg="white", font=('Times New Roman', 13, 'bold')).place(x=830, y=177)
+        storage1 = Label(broot, text="Storage", fg="white", bg="black", font=('Times New Roman', 16, 'bold')).place(
+            x=925, y=177)
 
-        price1 = Label(iroot, text="Price", bg="white", font=('Times New Roman', 13, 'bold')).place(x=915, y=177)
+        price1 = Label(broot, text="Price", fg="white", bg="black", font=('Times New Roman', 16, 'bold')).place(x=1025,
+                                                                                                                y=177)
 
-        speciality1 = Label(iroot, text="Speciality", bg="white", font=('Times New Roman', 13, 'bold')).place(x=980,y=177)
+        speciality1 = Label(broot, text="Speciality", fg="white", bg="black",
+                            font=('Times New Roman', 16, 'bold')).place(x=1105, y=177)
         go_backimg=ImageTk.PhotoImage(Image.open('back1.png'))
-        go_back=Button(iroot,image=go_backimg,borderwidth=5,command=iroot.destroy)
+        go_back=Button(broot,image=go_backimg,borderwidth=5,command=broot.destroy)
         go_back.place(x=610,y=550)
 
         conn.commit()
@@ -764,10 +796,12 @@ def mainpage():
     def G5 ():
         global go_backimg
         global  smartphone_search_page_img
-        iroot=Toplevel()
-        iroot.geometry("%dx%d+0+0" % (iroot.winfo_screenwidth(), iroot.winfo_screenheight()))
+        g5root=Toplevel()
+        g5root.geometry("%dx%d+0+0" % (g5root.winfo_screenwidth(), g5root.winfo_screenheight()))
+        g5root.title('Smartphone Management System')
+        g5root.iconbitmap('smartphone2.ico')
         smartphone_search_page_img = ImageTk.PhotoImage(Image.open('smartphone2.png'))
-        login_img = Label(iroot, image=smartphone_search_page_img).place(x=0, y=0)
+        login_img = Label(g5root, image=smartphone_search_page_img).place(x=0, y=0)
 
         # Create a databases or connect to one
         conn = sqlite3.connect('address_book2.db')
@@ -796,47 +830,52 @@ def mainpage():
                     print_GPU += str(record[3]) + "\n"
                     print_RAM += str(record[4]) + "\n"
                     print_storage += str(record[5]) + "\n"
-                    print_price += str(record[6]) + "\n"
+                    print_price += "Rs"+str(record[6]) + "\n"
                     print_speciality += str(record[7]) + "\n"
 
-                sm_label = Label(iroot, text=print_smartphone,font=('times new roman',12))
-                sm_label.place(x=310, y=220)
-                bd_label = Label(iroot, text=print_brand,font=('times new roman',12))
-                bd_label.place(x=470, y=220)
-                pro_label = Label(iroot, text=print_processor,font=('times new roman',12))
-                pro_label.place(x=545, y=220)
-                GU_label = Label(iroot, text=print_GPU,font=('times new roman',12))
-                GU_label.place(x=670, y=220)
-                RM_label = Label(iroot, text=print_RAM,font=('times new roman',12))
-                RM_label.place(x=780, y=220)
-                storage_label = Label(iroot, text=print_storage,font=('times new roman',12))
-                storage_label.place(x=840, y=220)
-                pri_label = Label(iroot, text=print_price,font=('times new roman',12))
-                pri_label.place(x=910, y=220)
-                speciality_label = Label(iroot, text=print_speciality,font=('times new roman',12))
-                speciality_label.place(x=990, y=220)
+                sm_label = Label(g5root, text=print_smartphone, font=('times new roman', 14))
+                sm_label.place(x=210, y=220)
+                bd_label = Label(g5root, text=print_brand, font=('times new roman', 14))
+                bd_label.place(x=430, y=220)
+                pro_label = Label(g5root, text=print_processor, font=('times new roman', 14))
+                pro_label.place(x=520, y=220)
+                GU_label = Label(g5root, text=print_GPU, font=('times new roman', 14))
+                GU_label.place(x=690, y=220)
+                RM_label = Label(g5root, text=print_RAM, font=('times new roman', 14))
+                RM_label.place(x=860, y=220)
+                storage_label = Label(g5root, text=print_storage, font=('times new roman', 14))
+                storage_label.place(x=930, y=220)
+                pri_label = Label(g5root, text=print_price, font=('times new roman', 14))
+                pri_label.place(x=1010, y=220)
+                speciality_label = Label(g5root, text=print_speciality, font=('times new roman', 14))
+                speciality_label.place(x=1115, y=220)
 
             except:
                 pass
-        smartphone_name1 = Label(iroot, text="Smartphone name", bg="white", font=('Times New Roman', 13, 'bold')).place(
-            x=310, y=177)
-        smartphone_brand1 = Label(iroot, text="Brand", bg="white", font=('Times New Roman', 13, 'bold')).place(x=470,
-                                                                                                               y=177)
+        smartphone_name1 = Label(g5root, text="Smartphone name", fg="white", bg="black",
+                                 font=('Times New Roman', 16, 'bold')).place(x=220, y=177)
+        smartphone_brand1 = Label(g5root, text="Brand", fg="white", bg="black",
+                                  font=('Times New Roman', 16, 'bold')).place(x=430, y=177)
 
-        processor_name1 = Label(iroot, text="Chipset", bg="white", font=('Times New Roman', 13, 'bold')).place(x=570,
-                                                                                                               y=177)
+        processor_name1 = Label(g5root, text="Chipset", fg="white", bg="black",
+                                font=('Times New Roman', 16, 'bold')).place(x=560, y=177)
 
-        GPU1 = Label(iroot, text="GPU", bg="white", font=('Times New Roman', 13, 'bold')).place(x=700, y=177)
-        RAM1 = Label(iroot, text="RAM", bg="white", font=('Times New Roman', 13, 'bold')).place(x=775, y=177)
+        GPU1 = Label(g5root, text="GPU", fg="white", bg="black", font=('Times New Roman', 16, 'bold')).place(x=750,
+                                                                                                            y=177)
+        RAM1 = Label(g5root, text="RAM", fg="white", bg="black", font=('Times New Roman', 16, 'bold')).place(x=860,
+                                                                                                            y=177)
 
-        storage1 = Label(iroot, text="Storage", bg="white", font=('Times New Roman', 13, 'bold')).place(x=830, y=177)
+        storage1 = Label(g5root, text="Storage", fg="white", bg="black", font=('Times New Roman', 16, 'bold')).place(
+            x=925, y=177)
 
-        price1 = Label(iroot, text="Price", bg="white", font=('Times New Roman', 13, 'bold')).place(x=915, y=177)
+        price1 = Label(g5root, text="Price", fg="white", bg="black", font=('Times New Roman', 16, 'bold')).place(x=1025,
+                                                                                                                y=177)
 
-        speciality1 = Label(iroot, text="Speciality", bg="white", font=('Times New Roman', 13, 'bold')).place(x=980,y=177)
+        speciality1 = Label(g5root, text="Speciality", fg="white", bg="black",
+                            font=('Times New Roman', 16, 'bold')).place(x=1105, y=177)
 
         go_backimg = ImageTk.PhotoImage(Image.open('back1.png'))
-        go_back = Button(iroot, image=go_backimg, borderwidth=5, command=iroot.destroy)
+        go_back = Button(g5root, image=go_backimg, borderwidth=5, command=iroot.destroy)
         go_back.place(x=610, y=550)
 
         conn.commit()
@@ -960,6 +999,8 @@ def login_fn():
     lroot.iconbitmap('smartphone2.ico')
     # for making the full screen.
     lroot.geometry("%dx%d+0+0" % (lroot.winfo_screenwidth(), lroot.winfo_screenheight()))
+    lroot.title('Login page')
+    lroot.iconbitmap('smartphone2.ico')
     # Login background image.
 
     image_login = ImageTk.PhotoImage(Image.open('login.png'))
@@ -976,6 +1017,8 @@ def login_fn():
         froot.iconbitmap('smartphone2.ico')
         # for making the full screen.
         froot.geometry("%dx%d+0+0" % (froot.winfo_screenwidth(), froot.winfo_screenheight()))
+        froot.title('Forget password page')
+        froot.iconbitmap('smartphone2.ico')
         # Login background image.
         image_forget = ImageTk.PhotoImage(Image.open('login.png'))
         forget_page_img = Label(froot, image=image_forget).place(x=0, y=0)
@@ -1052,26 +1095,29 @@ def login_fn():
                         borderwidth=0)
     forget_btn.place(x=650, y=350)
 
+
     def login_main_fn():
-        # Create a databases or connect to one
+        # Connecting to database.
         conn = sqlite3.connect('login_sqlite.db')
-        # Create cursor
+        # Creating cursor
         c = conn.cursor()
-        # query of the database
         c.execute("SELECT *, oid FROM login")
         records = c.fetchall()
         # Loop through the results
-
         for record in records:
             if str(record[0]) == user_name_entry.get() and str(record[1]) == password_entry.get():
-            # str(record[6]) added for displaying the id
                 try:
                     messagebox.showinfo("login","login successful",parent=lroot)
                     lroot.withdraw()
                     mainpage()
                 except :
                     pass
-        messagebox.showinfo("login", "login no successful", parent=lroot)
+            elif user_name_entry.get()=="" or password_entry.get()=="" :
+                try:
+                   return messagebox.showinfo("login", "Please fill completely.", parent=lroot)
+                except:
+                    pass
+        messagebox.showinfo("login", "Your username and password do not match.", parent=lroot)
         conn.commit()
         conn.close()
     user_name_label = Label(lroot, text="User Name", font=('Times New Roman', 13), bg="white")
