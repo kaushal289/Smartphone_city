@@ -106,7 +106,6 @@ def mainpage():
         global go_backimg
         for record in records:
             if str(record[0]) == (smartphone_entry.get()).lower():
-                # str(record[6]) added for displaying the id
                 try:
                     sm_name=Label(iroot,text=str(record[0]),font=("Times New Roman",14))
                     sm_name.place(x=210,y=220)
