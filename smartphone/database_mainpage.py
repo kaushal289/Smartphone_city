@@ -24,9 +24,10 @@ c.execute(""" CREATE TABLE addresses(
 '''
 
 
-
+#creating a class
 class log:
     def login12(self):
+        #admin login function of database.
         def log1():
             if self.username_ent.get() == "kaushal"and self.pass_ent.get()=="123":
                 login123(self)
@@ -47,7 +48,7 @@ class log:
         pass_leb = Label(root4, text="Password", font=("times new roman", 16, "bold"), bg="white")
         pass_leb.place(x=600, y=340)
 
-
+        # function of the mainpage of database
         def login123(self):
             root = Toplevel()
             root.title('Database GUI')
@@ -128,7 +129,6 @@ class log:
                 # query of the database
                 c.execute("SELECT * FROM addresses WHERE oid=" + record_id)
                 records = c.fetchall()
-                # print(records)
                 # Creating global variable for all text boxes
                 global smartphone_editor
                 global brand_editor
@@ -194,7 +194,7 @@ class log:
 
             # Create submit button for databases
             def submit():
-                # Create a databases or connect to one
+                # Connecting to database.
                 conn = sqlite3.connect('address_book2.db')
                 # Create cursor
                 c = conn.cursor()
@@ -224,7 +224,7 @@ class log:
                 storage.delete(0, END)
                 price.delete(0, END)
                 speciality.delete(0, END)
-
+            #desplays all the data present in database
             def display():
                 root2 = Toplevel()
                 root2.geometry("%dx%d+0+0" % (root2.winfo_screenwidth(), root2.winfo_screenheight()))
@@ -271,7 +271,6 @@ class log:
                 print9 = ""
 
                 for record in records:
-                    # str(record[6]) added for displaying the id
                     print1 += str(record[8]) + "\n"
                     print2 += str(record[0]) + "\n"
                     print3 += str(record[1]) + "\n"
@@ -370,11 +369,11 @@ class log:
 
             mainloop()
 
-            # Creating a function to delete a record
 
         loginbtn = Button(root4, text="Login", command=lambda: log1(),bg="lightblue", font=("times new roman", 16, "bold"))
         loginbtn.place(x=690, y=400)
         root4.mainloop()
+#running the class function
 a=log()
 root4=Tk()
 root4.title('Admin Login')
