@@ -12,7 +12,6 @@ This mathematical calculater can perform these functions:
 * Subtraction
 * Multiplication
 * Division
-* Power
-* Float Division
+
 * Multiple operations
 
