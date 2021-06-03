@@ -212,7 +212,7 @@ class log:
                         'speciality': speciality.get()
                     })
                 # showinfo messagebox
-                messagebox.showinfo("Adresses", "Inserted Successfully")
+                messagebox.showinfo("Adresses", "Inserted Successfully",parent=root)
                 conn.commit()
                 conn.close()
                 # clear the text boxes

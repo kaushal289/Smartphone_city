@@ -186,7 +186,6 @@ def mainpage():
                     return messagebox.showinfo("Sorry", "Please enter name of mobile", parent=mroot)
                 except:
                     pass
-
         return messagebox.showinfo("Sorry", "No such smartphone was found.", parent=mroot)
 
         a = 1
