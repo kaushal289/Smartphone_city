@@ -8,5 +8,3 @@ Smartphone is one of the widely used technology in the world. Smartphones have b
 <h2 align="left">Aim </h2>
 The main aim of this project is to comfort a new smartphone buyer, to choose a smartphone that they are likely going to buy.
 
-
-
